@@ -1,0 +1,5 @@
+pypdflib: Python based PDF Rendering Library
+
+Features:
+* Uses Pango Cairo for rendering
+* Supports Complex scripts such as Indic scripts
