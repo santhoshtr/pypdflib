@@ -1,0 +1,8 @@
+* Add hyphenation module- adopt code from silpa
+* Add support for multiple image formats
+* fix the header footer alignment
+* Add more widgets, fix the bugs of existing widgets
+* Define a markup language and write a parser. refer existing libraries in other languages
+* Add documentation
+* Add more test cases
+* Add more samples
