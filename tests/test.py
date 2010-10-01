@@ -1,5 +1,5 @@
 #!/usr/bin/python
-#-*- coding:utf8 -*-
+# -*-coding: utf-8 -*-
 import sys
 sys.path.append("../")  
 from pypdflib.writer import PDFWriter
@@ -46,6 +46,16 @@ if __name__=="__main__":
     while True:
         para_content = para_file_bengali.readline()
         if para_content ==None or para_content=="" : break 
+        para = Paragraph(text=para_content)
+        pdf.add_paragraph(para)
+
+    h2 = Text("Kannada",font_size=14)
+    pdf.add_h2(h2)
+
+    para_file_kannada = open("kannada.txt")
+    while True:
+        para_content = para_file_kannada.readline()
+        if para_content == None or para_content == "":break
         para = Paragraph(text=para_content)
         pdf.add_paragraph(para)
     
