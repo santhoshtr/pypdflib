@@ -105,6 +105,7 @@ class PDFWriter():
     
     def add_li(self, text):
         if(text.text==None):return
+        self.assert_page_break()
         li_font_description = pango.FontDescription()
         li_font_description.set_family(text.font)
         li_font_description.set_size((int)(text.font_size* pango.SCALE))
@@ -120,6 +121,7 @@ class PDFWriter():
         self.pc.show_layout(li_layout)
         self.position_y+=logical_rect[3]/pango.SCALE+self.para_break_width
         self.position_x=0
+        
     def write_footer(self,footer):
         if footer == None: return 
         footer_font_description = pango.FontDescription()
@@ -174,8 +176,8 @@ class PDFWriter():
         paragraph_font_description.set_size((int)(paragraph.font_size * pango.SCALE))
         paragraph_layout.set_font_description(paragraph_font_description)
         paragraph_layout.set_width((int)((self.width - self.left_margin-self.right_margin) * pango.SCALE))
-        paragraph_layout.set_justify(True)
-        print(paragraph.text)
+        if(paragraph.justify):
+			paragraph_layout.set_justify(True)
         paragraph_layout.set_text(paragraph.text+"\n")#fix it , adding new line to keep the looping correct?!
         self.context.move_to(*self.position)
         pango_layout_iter = paragraph_layout.get_iter();
@@ -290,6 +292,16 @@ class PDFWriter():
         self.context.move_to(self.left_margin, self.top_margin)
         self.position_y=0    
         
+                    
+    def page_break(self):
+        self.page_num= self.page_num+1
+        self.write_header(self.header)
+        if self.footer:
+            self.footer.set_text(str(self.page_num))
+            self.write_footer(self.footer)
+        self.context.show_page()
         
- 
+    def assert_page_break(self):
+        if  self.position_y > self.ybottom:
+            self.page_break()
 
