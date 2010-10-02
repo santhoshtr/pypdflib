@@ -1,0 +1,1 @@
+from hyphenator import *
