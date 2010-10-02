@@ -1,5 +1,5 @@
 #!/usr/bin/python
-#-*- coding:utf8 -*-
+#-*- coding: utf-8 -*-
 import cairo
 import pango
 import pangocairo
