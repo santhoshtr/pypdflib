@@ -235,18 +235,9 @@ class Hyphenator:
     def hyphenate(self,text,language, hyphen="&shy;"):
         response=""
         words = text.split(" ")
-#        print "detected lang is " +lang
         self.loadHyphDict(language)
         for word in words:
              hyph_word = self.inserted(word, hyphen)
              response = response + hyph_word + " "
         return response   
-    def get_module_name(self):
-        return "Hyphentator"
-    def get_info(self):
-        return  "Hyphenates each word in the text in all possible positions"    
-        
-def getInstance():
-    return Hyphenator()
-
 
