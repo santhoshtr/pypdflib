@@ -48,6 +48,7 @@ if __name__=="__main__":
         para_content = para_file_malayalam.readline()
         if para_content ==None or para_content=="" : break 
         para = Paragraph(text=para_content, font="Rachana")
+        para.language = "ml_IN"
         pdf.add_paragraph(para)
     h2= Text("Hindi",font_size=14, font="Rachana") 
     pdf.add_h2(h2)
@@ -57,6 +58,7 @@ if __name__=="__main__":
         para_content = para_file_hindi.readline()
         if para_content ==None or para_content=="" : break 
         para = Paragraph(text=para_content)
+        para.language = "hi_IN"
         pdf.add_paragraph(para)
         
     h2= Text("Bengali",font_size=14) 
@@ -67,6 +69,7 @@ if __name__=="__main__":
         para_content = para_file_bengali.readline()
         if para_content ==None or para_content=="" : break 
         para = Paragraph(text=para_content)
+        para.language = "bn_IN"
         pdf.add_paragraph(para)
 
     h2 = Text("Kannada",font_size=14)
@@ -77,6 +80,7 @@ if __name__=="__main__":
         para_content = para_file_kannada.readline()
         if para_content == None or para_content == "":break
         para = Paragraph(text=para_content)
+        para.language = "kn_IN"
         pdf.add_paragraph(para)
     
     pdf.flush()

@@ -31,7 +31,7 @@ class Widget:
         self.margin_bottom = 0.0
         self.margin_left= 0.0   
         self.margin_right = 0.0
-       
+        self.language = None
         
     def set_margin(self, left,top, right,bottom) :
         self.margin_top = top
@@ -133,8 +133,8 @@ class Text(Widget):
             self.text_align = pango.ALIGN_LEFT    
         self.text = text
         self.markup= markup
-        self.underline =  True
-        self.underline_thickness = 1.0
+        self.underline =  False
+        self.underline_thickness = 0.0
      
         
     def set_text(self,text):

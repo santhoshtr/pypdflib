@@ -23,7 +23,7 @@
 import cairo
 import pango
 import pangocairo
-
+from utils import Hyphenator
 class PDFWriter():
     def __init__(self,filename, width, height):
         self.width=width
@@ -176,7 +176,8 @@ class PDFWriter():
         paragraph_font_description.set_size((int)(paragraph.font_size * pango.SCALE))
         paragraph_layout.set_font_description(paragraph_font_description)
         paragraph_layout.set_width((int)((self.width - self.left_margin-self.right_margin) * pango.SCALE))
-        if(paragraph.justify):
+        if(paragraph.justify and paragraph.language):
+			paragraph.text = Hyphenator().hyphenate(paragraph.text, paragraph.language)
 			paragraph_layout.set_justify(True)
         paragraph_layout.set_text(paragraph.text+"\n")#fix it , adding new line to keep the looping correct?!
         self.context.move_to(*self.position)

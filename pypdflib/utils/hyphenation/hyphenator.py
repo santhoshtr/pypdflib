@@ -219,7 +219,7 @@ class Hyphenator:
         given as the second parameter, that defaults to '-'.
         """
         if isinstance(word, str):
-            word = word.decode('latin1')
+            word = word.decode('utf-8')
         l = list(word)
         for p in reversed(self.positions(word)):
             if p.data:
@@ -232,12 +232,13 @@ class Hyphenator:
                 l.insert(p, hyphen)
         return ''.join(l)
                       
-    def hyphenate(self,text,language, hyphen="&shy;"):
+    def hyphenate(self,text,language, hyphen=u'\u00AD'):
         response=""
         words = text.split(" ")
         self.loadHyphDict(language)
         for word in words:
              hyph_word = self.inserted(word, hyphen)
              response = response + hyph_word + " "
+        print  response.encode("utf-8")
         return response   
 
