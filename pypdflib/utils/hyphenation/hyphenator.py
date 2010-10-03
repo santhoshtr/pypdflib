@@ -239,6 +239,5 @@ class Hyphenator:
         for word in words:
              hyph_word = self.inserted(word, hyphen)
              response = response + hyph_word + " "
-        print  response.encode("utf-8")
         return response   
 
