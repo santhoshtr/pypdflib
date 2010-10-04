@@ -22,6 +22,7 @@ setup(
     long_description=long_description,
     packages=find_packages('src'),
     package_dir = {'': 'src'},
+    setup_requires = ['setuptools-git'],
     namespace_packages=['pypdflib'],
     include_package_data = True,
     install_requires=['setuptools'],
