@@ -23,7 +23,6 @@
 import cairo
 import pango
 import pangocairo
-from utils import Hyphenator
 class PDFWriter():
     def __init__(self,filename, width, height):
         self.width=width
@@ -59,6 +58,7 @@ class PDFWriter():
         self.footer = footer
         
     def add_h1(self, text):
+        self.assert_page_break()
         h1_font_description = pango.FontDescription()
         h1_font_description.set_family(text.font)
         h1_font_description.set_size((int)(text.font_size* pango.SCALE))
@@ -74,6 +74,7 @@ class PDFWriter():
         self.position_y+=logical_rect[3]/pango.SCALE+self.para_break_width
         
     def add_h2(self, text):
+        self.assert_page_break()
         h2_font_description = pango.FontDescription()
         h2_font_description.set_family(text.font)
         h2_font_description.set_size((int)(text.font_size* pango.SCALE))
@@ -89,6 +90,7 @@ class PDFWriter():
         self.position_y+=logical_rect[3]/pango.SCALE+self.para_break_width
         
     def add_h3(self, text):
+        self.assert_page_break()
         h3_font_description = pango.FontDescription()
         h3_font_description.set_family(text.font)
         h3_font_description.set_size((int)(text.font_size* pango.SCALE))
@@ -176,9 +178,8 @@ class PDFWriter():
         paragraph_font_description.set_size((int)(paragraph.font_size * pango.SCALE))
         paragraph_layout.set_font_description(paragraph_font_description)
         paragraph_layout.set_width((int)((self.width - self.left_margin-self.right_margin) * pango.SCALE))
-        if(paragraph.justify and paragraph.language):
-			paragraph.text = Hyphenator().hyphenate(paragraph.text, paragraph.language)
-			paragraph_layout.set_justify(True)
+        if(paragraph.justify):
+            paragraph_layout.set_justify(True)
         paragraph_layout.set_text(paragraph.text+"\n")#fix it , adding new line to keep the looping correct?!
         self.context.move_to(*self.position)
         pango_layout_iter = paragraph_layout.get_iter();

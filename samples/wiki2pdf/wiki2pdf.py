@@ -23,7 +23,7 @@
 
 import sys
 sys.path.append("../")   #not good!
-sys.path.append("../../")  #not good!
+sys.path.append("../../src/")  #not good!
 from pypdflib.writer import PDFWriter
 from pypdflib.widgets import *
 from pypdflib.styles import *
@@ -34,19 +34,29 @@ import urllib
 import urllib2
 
 class Wikiparser(SGMLParser):
+    def __init__(self, url, verbose=0):
+        "Initialise an object, passing 'verbose' to the superclass."
+        SGMLParser.__init__(self, verbose)
+        self.hyperlinks = []
+        self.url = url
+        self.pdf = PDFWriter(self.url.split("/")[-1] +".pdf",595, 842)
+        header = Header(text_align = pango.ALIGN_CENTER)
+        #TODO Alignment not working.
+        header.set_text(self.url)
+        self.pdf.set_header(header)
+        h1= Text(self.url.split("/")[-1],font="Dyuthi",font_size=32) 
+        self.pdf.add_h1(h1)
+        h2= Text(self.url,font="Rachan",font_size=16) 
+        self.pdf.add_h2(h2)
+        footer = Footer(text_align = pango.ALIGN_CENTER)
+        footer.set_text("wiki2pdf")
+        self.pdf.set_footer(footer)
+        self.pdf.page_break()
+        
     def reset(self):                              
         SGMLParser.reset(self)
         self.images = []
-        #TODO make the output file configurable- take it from command line
-        self.pdf = PDFWriter("output.pdf",595, 842)
-        header = Header(text_align = pango.ALIGN_CENTER)
         #TODO Alignment not working.
-        header.set_text("A wikipedia article")
-        self.pdf.set_header(header)
-        footer = Footer(text_align = pango.ALIGN_CENTER)
-        footer.set_text("wiki2pdf")
-        #TODO Alignment not working.
-        self.pdf.set_footer(footer)
         self.h1 = False
         self.h2 = False
         self.li = False
@@ -75,7 +85,7 @@ class Wikiparser(SGMLParser):
         
     def end_h1(self):
         self.h1=False
-        h1= Text(self.buffer,font_size=16) 
+        h1= Text(self.buffer,font="Dyuthi",font_size=16) 
         self.pdf.add_h1(h1)
         self.buffer = None
         
@@ -86,7 +96,7 @@ class Wikiparser(SGMLParser):
     def end_h2(self):
         self.h2=False
         if self.buffer and self.buffer.strip()>"":
-            h2= Text(self.buffer,font_size=14) 
+            h2= Text(self.buffer,font="Rachana",font_size=14) 
             self.pdf.add_h2(h2)
         self.buffer = None
         
@@ -137,8 +147,23 @@ class Wikiparser(SGMLParser):
         self.p=False
         para = Paragraph(text=self.buffer, font="Rachana",font_size=10,)
         para.set_justify(True)
+        para.language = "ml_IN"
+        para.set_hyphenate(True)
         self.pdf.add_paragraph(para)   
         self.buffer = None
+    def set_header(self,text):
+        self.header = text
+        
+    def parse(self):
+        opener = urllib2.build_opener()
+        opener.addheaders = [('User-agent', 'Mozilla/5.0')]
+        infile = opener.open(self.url)
+        page = infile.read()
+        page = cleanup(page)
+        "Parse the given string 's'."
+        self.feed(page)
+        self.close()
+        
 def cleanup(page):
     """
     remove unwanted sections of the page.
@@ -157,21 +182,11 @@ def cleanup(page):
         document.remove(section.strip())
     return document.wrap('<div></div>').html().encode("utf-8")
     
-def get_page(link):
-    #quotedfilename = urllib.quote(link.encode('utf-8')) 
-    #link = quotedfilename
-    opener = urllib2.build_opener()
-    opener.addheaders = [('User-agent', 'Mozilla/5.0')]
-    infile = opener.open(link)
-    page = infile.read()
-    page = cleanup(page)
-    parser = Wikiparser()
-    parser.feed(page)    
-    parser.close()
     
 if __name__=="__main__":
-	if len(sys.argv)>1:
-		get_page(sys.argv[1]) #"http://ml.wikipedia.org/wiki/Computer"
-	else:
-		print("Usage: wiki2pdf url")	
-		print("Example: wiki2pdf http://en.wikipedia.org/wiki/Computer")	
+    if len(sys.argv)>1:
+        parser = Wikiparser(sys.argv[1]) #"http://ml.wikipedia.org/wiki/Computer"
+        parser.parse()    
+    else:
+        print("Usage: wiki2pdf url")    
+        print("Example: wiki2pdf http://en.wikipedia.org/wiki/Computer")    

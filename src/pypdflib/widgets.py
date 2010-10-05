@@ -21,7 +21,9 @@
 # along with pypdflib.  If not, see <http://www.gnu.org/licenses/>.
 
 import pango
-class Widget:
+from utils import Hyphenator
+from utils import normalizer
+class Widget(object):
     
     def __init__(self,style=None):
         self.style=style
@@ -31,7 +33,18 @@ class Widget:
         self.margin_bottom = 0.0
         self.margin_left= 0.0   
         self.margin_right = 0.0
-        self.language = None
+        self.hyphenate = True
+        self.language=None
+        self.justify = True
+        
+    def set_justify(self, justify):
+        self.justify=justify
+        
+    def set_hyphenate(self, hiphenate):
+        self.hiphenate=hiphenate
+        
+    def set_language(self, language):
+        self.language = language
         
     def set_margin(self, left,top, right,bottom) :
         self.margin_top = top
@@ -47,10 +60,22 @@ class Widget:
         
     def set_yoffset(self, yoffset):
         self.yoffset = yoffset    
+        
+    def __getattribute__(self,name):
+        if name=='text':
+            text = normalizer.normalize(object.__getattribute__(self, 'text'))
+            if(self.justify and self.language and self.hiphenate):
+                text= Hyphenator().hyphenate(text,self.language)
+            return text
+        else:
+            return object.__getattribute__(self, name)
 
+       
+        
 class Paragraph(Widget):
     
     def __init__(self,  text=None, markup=None, font=None, text_align=None, font_size=None):
+        super(Paragraph,self).__init__()
         if font:
             self.font = font
         else:
@@ -65,22 +90,12 @@ class Paragraph(Widget):
             self.text_align = pango.ALIGN_LEFT    
         self.text = text
         self.markup= markup
-        self.hyphenate = True
-        self.language=None
-        self.justify = True
-        
-    def set_justify(self, justify):
-        self.justify=justify
-        
-    def set_hyphenate(self, hiphenate):
-        self.hiphenate=hiphenate
-        
-    def set_language(self, language):
-        self.language = language
+   
         
     def set_text(self,text):
         self.text=text
-        
+
+
     def set_markup(self, markup):
         self.markup = markup
 
@@ -88,6 +103,7 @@ class Paragraph(Widget):
 class Header(Widget):
     
     def __init__(self,  text=None, markup=None, font=None, text_align=None, font_size=None):
+        super(Header,self).__init__()
         if font:
             self.font = font
         else:
@@ -119,6 +135,7 @@ class Header(Widget):
 class Text(Widget):
     
     def __init__(self,  text=None, markup=None, font=None, text_align=None, font_size=None, height=0,width=0):
+        super(Text,self).__init__()
         if font:
             self.font = font
         else:
@@ -135,7 +152,6 @@ class Text(Widget):
         self.markup= markup
         self.underline =  False
         self.underline_thickness = 0.0
-     
         
     def set_text(self,text):
         self.text=text
@@ -152,6 +168,7 @@ class Text(Widget):
 class Footer(Widget):
     
     def __init__(self,  text=None, markup=None, font=None, text_align=None, font_size=None):
+        super(Footer,self).__init__()
         if font:
             self.font = font
         else:
@@ -245,6 +262,7 @@ class Table(Widget) :
 class Image(Widget):
     
     def __init__(self, image_file=None, width=None, height=None, scale_x=None, scale_y=None,padding_bottom=10):
+        super(Image,self).__init__()
         self.image_file =  image_file
         self.width =  width
         self.height =  height
