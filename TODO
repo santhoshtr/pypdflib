@@ -10,7 +10,6 @@
 * TODO Create sample PDFs to showcase in multiple languages
 * TODO Test/Fix the library in windows. Document the build steps
 * TODO Have a reStructuredText parser and PDF converter
-* TODO Have a reStructuredText parser and PDF converter
 * TODO PDF Metadata support 
 * TODO PDF Merge feature
 * TODO Support Markmin markup language http://web2py.googlecode.com/hg/gluon/contrib/markmin/markmin.html
