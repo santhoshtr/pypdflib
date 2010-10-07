@@ -82,6 +82,17 @@ if __name__=="__main__":
         para = Paragraph(text=para_content)
         para.language = "kn_IN"
         pdf.add_paragraph(para)
+
+    h2 = Text("Tamil",font_size=14)
+    pdf.add_h2(h2)
+
+    para_file_tamil = open("tamil.txt")
+    while True:
+        para_content = para_file_tamil.readline()
+        if para_content == None or para_content == "":break
+        para = Paragraph(text=para_content)
+        para.language = "ta_IN"
+        pdf.add_paragraph(para)
     
     pdf.flush()
     table = Table(border_width=1)
