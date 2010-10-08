@@ -220,6 +220,11 @@ class PDFWriter():
             first_line = False
 
     def flush(self) :   
+        """
+        Flush the contents before finishing and closing the PDF.
+        This must be called at the end of the program. Otherwise the footer at the
+        last page will be missing.
+        """
         self.page_num= self.page_num+1
         self.write_header(self.header)
         self.footer.set_text(str(self.page_num))
@@ -288,6 +293,13 @@ class PDFWriter():
         self.context.show_page()
         
     def blank_space(self, height):
+        """
+        Inserts vertical blank space 
+        Color will be white.
+        
+        Arguments
+        -height - The vertical measurement for the blank space.
+        """
         self.context.identity_matrix()
         self.context.set_source_rgba (1.0, 1.0, 1.0, 1.0)
         self.context.rectangle(0, self.position_y, self.width, height)
@@ -298,6 +310,11 @@ class PDFWriter():
         
                     
     def page_break(self):
+        """
+        Insert a pagebreak.
+        If the header and footer is set, they will be written to page.
+        Page number will be incremented.
+        """
         self.page_num= self.page_num+1
         self.write_header(self.header)
         if self.footer:
@@ -306,6 +323,24 @@ class PDFWriter():
         self.context.show_page()
         
     def assert_page_break(self):
+        """
+        Check if the current y position exceeds the page's height. 
+        If so do the page break.
+        """
         if  self.position_y > self.ybottom:
             self.page_break()
 
+    def move_context(self, xoffset, yoffset):
+        """
+        Move the drawing context to given x,y offsets. 
+        This is relative to the currect x,y drawing positions.
+        
+        Arguments:
+    
+        - xoffset: offset for the current x drawing postion 
+        - yoffset: offset for the current y drawing postion 
+        
+        """
+        self.position_x += xoffset
+        self.position_y += yoffset
+        
