@@ -69,12 +69,12 @@ class PDFWriter():
         if self.position_y==0:
             self.position_y+=self.top_margin 
         self.position_y+=self.line_width*1
+        self.assert_page_break()
         self.context.move_to(self.left_margin, self.position_y)
         self.pc.show_layout(h1_layout)
         self.position_y+=logical_rect[3]/pango.SCALE+self.para_break_width
         
     def add_h2(self, text):
-        self.assert_page_break()
         h2_font_description = pango.FontDescription()
         h2_font_description.set_family(text.font)
         h2_font_description.set_size((int)(text.font_size* pango.SCALE))
@@ -85,6 +85,7 @@ class PDFWriter():
         if self.position_y==0:
             self.position_y+=self.top_margin
         self.position_y+=self.line_width*1
+        self.assert_page_break()
         self.context.move_to(self.left_margin, self.position_y)
         self.pc.show_layout(h2_layout)
         self.position_y+=logical_rect[3]/pango.SCALE+self.para_break_width
@@ -101,6 +102,7 @@ class PDFWriter():
         if self.position_y==0:
             self.position_y+=self.top_margin
         self.position_y+=self.line_width*1
+        self.assert_page_break()
         self.context.move_to(self.left_margin, self.position_y)
         self.pc.show_layout(h3_layout)
         self.position_y+=logical_rect[3]/pango.SCALE+self.para_break_width
