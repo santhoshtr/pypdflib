@@ -44,9 +44,10 @@ class Wikiparser(SGMLParser):
         #TODO Alignment not working.
         header.set_text(self.url)
         self.pdf.set_header(header)
+        self.pdf.move_context(0,500)
         h1= Text(self.url.split("/")[-1],font="Dyuthi",font_size=32) 
         self.pdf.add_h1(h1)
-        h2= Text(self.url,font="Rachan",font_size=16) 
+        h2= Text(self.url,font="Rachana",font_size=16) 
         self.pdf.add_h2(h2)
         footer = Footer(text_align = pango.ALIGN_CENTER)
         footer.set_text("wiki2pdf")
@@ -163,6 +164,7 @@ class Wikiparser(SGMLParser):
         "Parse the given string 's'."
         self.feed(page)
         self.close()
+        self.pdf.flush()
         
 def cleanup(page):
     """
