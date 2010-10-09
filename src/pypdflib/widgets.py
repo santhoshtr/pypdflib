@@ -33,7 +33,7 @@ class Widget(object):
         self.margin_bottom = 0.0
         self.margin_left= 0.0   
         self.margin_right = 0.0
-        self.hyphenate = True
+        self.hyphenate = False
         self.language=None
         self.justify = True
         
@@ -64,7 +64,7 @@ class Widget(object):
     def __getattribute__(self,name):
         if name=='text':
             text = normalizer.normalize(object.__getattribute__(self, 'text'))
-            if(self.justify and self.language and self.hiphenate):
+            if(self.justify and self.language and self.hyphenate):
                 text= Hyphenator().hyphenate(text,self.language)
             return text
         else:
