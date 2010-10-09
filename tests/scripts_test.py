@@ -21,14 +21,14 @@
 # along with pypdflib.  If not, see <http://www.gnu.org/licenses/>.
 
 import sys
-sys.path.append("../")  
+sys.path.append("../src/")  #not good!
 from pypdflib.writer import PDFWriter
 from pypdflib.widgets import *
 from pypdflib.styles import *
 import pango
 
 if __name__=="__main__":
-    pdf = PDFWriter("output.pdf",595, 842)
+    pdf = PDFWriter("scripts.pdf",595, 842)
     header = Header(text_align = pango.ALIGN_CENTER)
     #TODO Alignment not working.
     header.set_text("test header")
@@ -94,7 +94,19 @@ if __name__=="__main__":
         para.language = "ta_IN"
         pdf.add_paragraph(para)
     
+    h2 = Text("Arabic",font_size=14)
+    pdf.add_h2(h2)    
+    para_file_tamil = open("arabic.txt")
+    while True:
+        para_content = para_file_tamil.readline()
+        if para_content == None or para_content == "":break
+        para = Paragraph(text=para_content)
+        para.language = "ar_AR"
+        para.set_hyphenate(False)
+        pdf.add_paragraph(para)
+            
     pdf.flush()
+    """
     table = Table(border_width=1)
     row = Row(height=50)
     for i in range(4):
@@ -104,3 +116,5 @@ if __name__=="__main__":
         table.add_row(row)
         
     pdf.draw_table(table)
+    pdf.flush()
+    """
