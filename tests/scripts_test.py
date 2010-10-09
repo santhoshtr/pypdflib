@@ -102,7 +102,7 @@ if __name__=="__main__":
         if para_content == None or para_content == "":break
         para = Paragraph(text=para_content)
         para.language = "ar_AR"
-        para.set_hyphenate(False)
+        para.set_justify(False)
         pdf.add_paragraph(para)
             
     pdf.flush()
