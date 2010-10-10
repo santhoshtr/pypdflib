@@ -2,7 +2,7 @@ Source: pypdflib
 Section: developement
 Priority: optional
 Maintainer: Santhosh Thottingal (santhosh.thottingal@gmail.com)
-Build-Depends: debhelper (>=7.0.50~), python-support (>= 0.6), cdbs (>= 0.4.49), python-all-dev
+Build-Depends: debhelper (>=7.0.50~), python-support (>= 0.6), cdbs (>= 0.4.49)
 XS-Python-Version: >=2.5
 Standards-Version: 3.9.1
 
