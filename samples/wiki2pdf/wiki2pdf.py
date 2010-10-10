@@ -177,7 +177,7 @@ def cleanup(page):
     div#jump-to-nav, div.top, div#column-one, div#siteNotice, div#purl, div#head,div#footer, div#head-base, div#page-base, div#stub, div#noprint,
     div#disambig,div.NavFrame,#colophon,.editsection,.toctoggle,.tochidden,.catlinks,.navbox,.sisterproject,.ambox,
     .toccolours,.topicondiv#f-poweredbyico,div#f-copyrightico,div#featured-star,li#f-viewcount,
-    li#f-about,li#f-disclaimer,li#f-privacy,.portal, #footer
+    li#f-about,li#f-disclaimer,li#f-privacy,.portal, #footer, #mw-head
     """
     unwanted_divs = unwanted_sections_list.split(",")
     for section in unwanted_divs:
