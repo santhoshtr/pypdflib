@@ -11,18 +11,16 @@ How to Install:
 
 1. Get the sourcecode
 
-        git clone git://github.com/santhoshtr/pypdflib.git
+        git clone http://git.gitorious.org/pypdflib/pypdflib.git
+			or
+        git clone http://github.com/santhoshtr/pypdflib.git
 
-2. Goto the pypdflib folder, Bootstrap the buildout system
+2. Create the eggs
 
-        python bootstrap.py
+        python setup.py build
 
-3. Create the eggs
+3. Install the library
 
-        bin/buildout setup . build
-
-4. Install the library
-
-        sudo bin/buildout setup . install 
+        sudo python setup.py install 
 
 
