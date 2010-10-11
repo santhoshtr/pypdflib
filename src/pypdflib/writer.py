@@ -24,6 +24,7 @@ import cairo
 import pango
 import pangocairo
 class PDFWriter():
+
     def __init__(self,filename, width, height):
         self.width=width
         self.height=height
@@ -91,6 +92,9 @@ class PDFWriter():
         self.position_y+=logical_rect[3]/pango.SCALE+self.para_break_width
         
     def add_h3(self, text):
+        """
+        Add Header - H3
+        """
         self.assert_page_break()
         h3_font_description = pango.FontDescription()
         h3_font_description.set_family(text.font)
