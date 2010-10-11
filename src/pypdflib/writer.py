@@ -59,6 +59,9 @@ class PDFWriter():
         self.footer = footer
         
     def add_h1(self, text):
+        """
+        Add Header - H1
+        """
         self.assert_page_break()
         h1_font_description = pango.FontDescription()
         h1_font_description.set_family(text.font)
