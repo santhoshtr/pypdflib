@@ -141,7 +141,7 @@ class PDFWriter():
         footer_layout = pangocairo.CairoContext(self.context).create_layout()
         footer_layout.set_font_description(footer_font_description)
         if footer.markup:
-            foote_layout.set_text(str(footer.markup))
+            footer_layout.set_text(str(footer.markup))
         else:
             footer_layout.set_text(str(footer.text))
         ink_rect, logical_rect = footer_layout.get_extents()
