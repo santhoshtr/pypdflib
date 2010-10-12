@@ -24,7 +24,7 @@ o [vasudev] TODO fix the header footer alignment
 * TODO Image should be able to place within paragraph.
 * TODO Add support for Multicolumn paragraphs
 * TODO Create a Label widget and wrap h1,h2,h3 etc around that
-  INPROGRESS: Santhosh
+  DONE: Santhosh 12.10.2010 22:41:38
 * TODO Add style definition feature. - support for predefined externalized styles for widgets.
 * TODO Image widget should have a configurable description.
 
