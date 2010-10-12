@@ -1,8 +1,7 @@
 * DONE Add hyphenation module- adopt code from silpa
   CLOSED: [2010-10-02 Sat 16:00]
-* TODO Add support for multiple image formats
-  INPROGRESS: Kurian
-* TODO fix the header footer alignment
+o [Kurian] TODO Add support for multiple image formats
+o [vasudev] TODO fix the header footer alignment
 * TODO Add more widgets, fix the bugs of existing widgets
 * TODO Define a markup language and write a parser. refer existing libraries in other languages
 * TODO Add documentation
