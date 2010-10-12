@@ -46,9 +46,9 @@ class Wikiparser(SGMLParser):
         self.pdf.set_header(header)
         self.pdf.move_context(0,500)
         h1= Text(self.url.split("/")[-1],font="Dyuthi",font_size=32) 
-        self.pdf.add_h1(h1)
+        self.pdf.add_text(h1)
         h2= Text(self.url,font="Rachana",font_size=16) 
-        self.pdf.add_h2(h2)
+        self.pdf.add_text(h2)
         footer = Footer(text_align = pango.ALIGN_CENTER)
         footer.set_text("wiki2pdf")
         self.pdf.set_footer(footer)
@@ -87,7 +87,7 @@ class Wikiparser(SGMLParser):
     def end_h1(self):
         self.h1=False
         h1= Text(self.buffer,font="Dyuthi",font_size=16) 
-        self.pdf.add_h1(h1)
+        self.pdf.add_text(h1)
         self.buffer = None
         
     def start_h2(self, attrs):         
@@ -98,7 +98,7 @@ class Wikiparser(SGMLParser):
         self.h2=False
         if self.buffer and self.buffer.strip()>"":
             h2= Text(self.buffer,font="Rachana",font_size=14) 
-            self.pdf.add_h2(h2)
+            self.pdf.add_text(h2)
         self.buffer = None
         
     def start_li(self, attrs):         
@@ -112,7 +112,7 @@ class Wikiparser(SGMLParser):
                 li= Text("• "+self.buffer,font_size=10) 
             else:
                 li= Text(self.buffer,font_size=10)     
-            self.pdf.add_li(li)
+            self.pdf.add_text(li)
         self.buffer = None
                 
     def start_a(self, attrs):         
