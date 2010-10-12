@@ -58,9 +58,9 @@ class PDFWriter():
         """
         self.footer = footer
         
-    def add_h1(self, text):
+    def add_text(self, text):
         """
-        Add Header - H1
+        Add text widget
         """
         self.assert_page_break()
         h1_font_description = pango.FontDescription()
@@ -77,61 +77,7 @@ class PDFWriter():
         self.context.move_to(self.left_margin, self.position_y)
         self.pc.show_layout(h1_layout)
         self.position_y+=logical_rect[3]/pango.SCALE+self.para_break_width
-        
-    def add_h2(self, text):
-        h2_font_description = pango.FontDescription()
-        h2_font_description.set_family(text.font)
-        h2_font_description.set_size((int)(text.font_size* pango.SCALE))
-        h2_layout = pangocairo.CairoContext(self.context).create_layout()
-        h2_layout.set_font_description(h2_font_description)
-        h2_layout.set_text(str(text.text))
-        ink_rect, logical_rect = h2_layout.get_extents()
-        if self.position_y==0:
-            self.position_y+=self.top_margin
-        self.position_y+=self.line_width*1
-        self.assert_page_break()
-        self.context.move_to(self.left_margin, self.position_y)
-        self.pc.show_layout(h2_layout)
-        self.position_y+=logical_rect[3]/pango.SCALE+self.para_break_width
-        
-    def add_h3(self, text):
-        """
-        Add Header - H3
-        """
-        self.assert_page_break()
-        h3_font_description = pango.FontDescription()
-        h3_font_description.set_family(text.font)
-        h3_font_description.set_size((int)(text.font_size* pango.SCALE))
-        h3_layout = pangocairo.CairoContext(self.context).create_layout()
-        h3_layout.set_font_description(h3_font_description)
-        h3_layout.set_text(str(text.text))
-        ink_rect, logical_rect = h3_layout.get_extents()
-        if self.position_y==0:
-            self.position_y+=self.top_margin
-        self.position_y+=self.line_width*1
-        self.assert_page_break()
-        self.context.move_to(self.left_margin, self.position_y)
-        self.pc.show_layout(h3_layout)
-        self.position_y+=logical_rect[3]/pango.SCALE+self.para_break_width
-    
-    def add_li(self, text):
-        if(text.text==None):return
-        self.assert_page_break()
-        li_font_description = pango.FontDescription()
-        li_font_description.set_family(text.font)
-        li_font_description.set_size((int)(text.font_size* pango.SCALE))
-        li_layout = pangocairo.CairoContext(self.context).create_layout()
-        li_layout.set_font_description(li_font_description)
-        li_layout.set_text(str(text.text))
-        ink_rect, logical_rect = li_layout.get_extents()
-        if self.position_y==0:
-            self.position_y+=self.top_margin
-        self.position_y+=self.line_width*1
-        self.position_x+=self.left_margin+self.line_width*1
-        self.context.move_to(self.position_x, self.position_y)
-        self.pc.show_layout(li_layout)
-        self.position_y+=logical_rect[3]/pango.SCALE+self.para_break_width
-        self.position_x=0
+  
         
     def write_footer(self,footer):
         if footer == None: return 
