@@ -25,23 +25,23 @@ from utils import Hyphenator
 from utils import normalizer
 class Widget(object):
     
-    def __init__(self,style=None):
-        self.style=style
+    def __init__(self,style = None):
+        self.style = style
         self.xoffset = 0.0
         self.yoffset = 0.0
         self.margin_top = 0.0
         self.margin_bottom = 0.0
-        self.margin_left= 0.0   
+        self.margin_left = 0.0   
         self.margin_right = 0.0
         self.hyphenate = False
-        self.language=None
+        self.language = None
         self.justify = True
         
     def set_justify(self, justify):
-        self.justify=justify
+        self.justify = justify
         
-    def set_hyphenate(self, hiphenate):
-        self.hiphenate=hiphenate
+    def set_hyphenate(self, hyphenate):
+        self.hiphenate = hyphenate
         
     def set_language(self, language):
         self.language = language
@@ -49,7 +49,7 @@ class Widget(object):
     def set_margin(self, left,top, right,bottom) :
         self.margin_top = top
         self.margin_bottom = bottom
-        self.margin_left= left   
+        self.margin_left = left   
         self.margin_right = right
         
     def set_style(self, style):
@@ -62,10 +62,10 @@ class Widget(object):
         self.yoffset = yoffset    
         
     def __getattribute__(self,name):
-        if name=='text':
+        if name == 'text':
             text = normalizer.normalize(object.__getattribute__(self, 'text'))
             if(self.justify and self.language and self.hyphenate):
-                text= Hyphenator().hyphenate(text,self.language)
+                text = Hyphenator().hyphenate(text,self.language)
             return text
         else:
             return object.__getattribute__(self, name)
@@ -74,7 +74,7 @@ class Widget(object):
         
 class Paragraph(Widget):
     
-    def __init__(self,  text=None, markup=None, font=None, text_align=None, font_size=None):
+    def __init__(self,  text = None, markup = None, font = None, text_align = None, font_size = None):
         super(Paragraph,self).__init__()
         if font:
             self.font = font
@@ -89,11 +89,11 @@ class Paragraph(Widget):
         else:
             self.text_align = pango.ALIGN_LEFT    
         self.text = text
-        self.markup= markup
+        self.markup = markup
    
         
     def set_text(self,text):
-        self.text=text
+        self.text = text
 
 
     def set_markup(self, markup):
@@ -102,7 +102,7 @@ class Paragraph(Widget):
 
 class Header(Widget):
     
-    def __init__(self,  text=None, markup=None, font=None, text_align=None, font_size=None):
+    def __init__(self,  text = None, markup = None, font = None, text_align = None, font_size = None):
         super(Header,self).__init__()
         if font:
             self.font = font
@@ -117,12 +117,12 @@ class Header(Widget):
         else:
             self.text_align = pango.ALIGN_LEFT    
         self.text = text
-        self.markup= markup
+        self.markup = markup
         self.underline =  True
         self.underline_thickness = 1.0
         
     def set_text(self,text):
-        self.text=text
+        self.text = text
         
     def set_markup(self, markup):
         self.markup = markup
@@ -134,7 +134,7 @@ class Header(Widget):
             
 class Text(Widget):
     
-    def __init__(self,  text=None, markup=None, font=None, text_align=None, font_size=None, height=0,width=0):
+    def __init__(self,  text = None, markup = None, font = None, text_align = None, font_size = None, height = 0,width = 0):
         super(Text,self).__init__()
         if font:
             self.font = font
@@ -149,17 +149,17 @@ class Text(Widget):
         else:
             self.text_align = pango.ALIGN_LEFT    
         self.text = text
-        self.markup= markup
+        self.markup = markup
         self.underline =  False
         self.underline_thickness = 0.0
         
     def set_text(self,text):
-        self.text=text
+        self.text = text
         
     def set_markup(self, markup):
         self.markup = markup
     
-    def set_underline(self, thickness=None):
+    def set_underline(self, thickness = None):
         self.underline =  True
         if thickness:
             self.underline_thickness = thickness
@@ -167,7 +167,7 @@ class Text(Widget):
 
 class Footer(Widget):
     
-    def __init__(self,  text=None, markup=None, font=None, text_align=None, font_size=None):
+    def __init__(self,  text = None, markup = None, font = None, text_align = None, font_size = None):
         super(Footer,self).__init__()
         if font:
             self.font = font
@@ -181,13 +181,14 @@ class Footer(Widget):
             self.text_align = text_align
         else:
             self.text_align = pango.ALIGN_LEFT    
+
         self.text = text
-        self.markup= markup
+        self.markup = markup
         self.underline =  True
         self.underline_thickness = 1.0
         
     def set_text(self,text):
-        self.text=text
+        self.text = text
         
     def set_markup(self, markup):
         self.markup = markup
@@ -206,23 +207,23 @@ class Line(Widget) :
             self.x2 = x2
         else:
             self.x2 = x1
-        self.y1=y1
-        self.y2=y2
-        self.thickness=None
+        self.y1 = y1
+        self.y2 = y2
+        self.thickness = None
         
     def set_thickness(self,thickness):
         self.thickness = thickness
 
 class Cell(Text):
-    def __init__(self,  text=None, border_width=0, height=0, width=0, cell_spacing=[0,0,0,0], **kw):
+    def __init__(self,  text = None, border_width = 0, height = 0, width = 0, cell_spacing = [0,0,0,0], **kw):
        Text.__init__ (self, **kw)
-       self.height=height
-       self.width=width
+       self.height = height
+       self.width = width
        self.cell_spacing = cell_spacing
-       self.text= text 
+       self.text = text 
     
 class Row(Widget):
-    def __init__(self, cells =None,  border_width=0, height=0):
+    def __init__(self, cells = None,  border_width = 0, height = 0):
         self.border_width = border_width
         self.cells = cells
         self.height = height
@@ -239,16 +240,16 @@ class Table(Widget) :
         self.border_width = border_width
         self.header_row = None
         self.subtitle = None
-        self.column_count=0
-        self.row_count=0
+        self.column_count = 0
+        self.row_count = 0
         
     def add_row(self, row):
-        if row==None:return
-        if self.rows==None: self.rows=[]
-        if self.column_count!=0:
-            if len(row.cells)!=self.column_count:
+        if row == None:return
+        if self.rows == None: self.rows = []
+        if self.column_count != 0:
+            if len(row.cells) != self.column_count:
                 raise Error('Number of cells differs in this row') 
-        self.column_count= len(row.cells)
+        self.column_count = len(row.cells)
         self.rows.append(row)
         self.row_count = len(self.rows)
         
@@ -261,24 +262,24 @@ class Table(Widget) :
       
 class Image(Widget):
     
-    def __init__(self, image_file=None, width=None, height=None, scale_x=None, scale_y=None,padding_bottom=10):
+    def __init__(self, image_file = None, width = None, height = None, scale_x = None, scale_y = None,padding_bottom = 10):
         super(Image,self).__init__()
-        self.image_file =  image_file
-        self.width =  width
-        self.height =  height
+        self.image_file = image_file
+        self.width = width
+        self.height = height
         self.scale_x = scale_x
         self.scale_y = scale_y
         self.padding_bottom = padding_bottom
         
     def set_width(self, width):
-        self.width =  width
+        self.width = width
         
     def set_height(self, height):
-        self.height =  height
+        self.height = height
         
     def set_size(self,width,height):
-        self.width =  width
-        self.height =  height
+        self.width = width
+        self.height = height
         
     def set_scale(self, scale_x, scale_y):
         self.scale_x = scale_x
