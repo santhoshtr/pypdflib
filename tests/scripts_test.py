@@ -38,9 +38,9 @@ if __name__=="__main__":
     #TODO Alignment not working.
     pdf.set_footer(footer)
     h1= Text("Samples",font_size=16) 
-    pdf.add_h1(h1)
+    pdf.add_text(h1)
     h2= Text("Malayalam",font_size=14) 
-    pdf.add_h2(h2)
+    pdf.add_text(h2)
     para_file_malayalam=open("malayalam.txt")
     #image = Image(image_file="Four_Sons_of_Dasaratha.png")
     #pdf.add_image(image)
@@ -51,7 +51,7 @@ if __name__=="__main__":
         para.language = "ml_IN"
         pdf.add_paragraph(para)
     h2= Text("Hindi",font_size=14, font="Rachana") 
-    pdf.add_h2(h2)
+    pdf.add_text(h2)
     para_file_hindi=open("hindi.txt")
     
     while True:
@@ -62,7 +62,7 @@ if __name__=="__main__":
         pdf.add_paragraph(para)
         
     h2= Text("Bengali",font_size=14) 
-    pdf.add_h2(h2)   
+    pdf.add_text(h2)   
      
     para_file_bengali=open("bengali.txt")
     while True:
@@ -73,7 +73,7 @@ if __name__=="__main__":
         pdf.add_paragraph(para)
 
     h2 = Text("Kannada",font_size=14)
-    pdf.add_h2(h2)
+    pdf.add_text(h2)
 
     para_file_kannada = open("kannada.txt")
     while True:
@@ -84,7 +84,7 @@ if __name__=="__main__":
         pdf.add_paragraph(para)
 
     h2 = Text("Tamil",font_size=14)
-    pdf.add_h2(h2)
+    pdf.add_text(h2)
 
     para_file_tamil = open("tamil.txt")
     while True:
@@ -95,7 +95,7 @@ if __name__=="__main__":
         pdf.add_paragraph(para)
     
     h2 = Text("Arabic",font_size=14)
-    pdf.add_h2(h2)    
+    pdf.add_text(h2)    
     para_file_tamil = open("arabic.txt")
     while True:
         para_content = para_file_tamil.readline()
@@ -105,7 +105,7 @@ if __name__=="__main__":
         para.set_justify(False)
         pdf.add_paragraph(para)
     h2 = Text("Japanese",font_size=14)
-    pdf.add_h2(h2)    
+    pdf.add_text(h2)    
     para_file_tamil = open("japanese.txt")
     while True:
         para_content = para_file_tamil.readline()
