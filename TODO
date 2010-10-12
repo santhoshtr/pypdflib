@@ -1,16 +1,31 @@
 * DONE Add hyphenation module- adopt code from silpa
   CLOSED: [2010-10-02 Sat 16:00]
 * TODO Add support for multiple image formats
+  INPROGRESS: Kurian
 * TODO fix the header footer alignment
 * TODO Add more widgets, fix the bugs of existing widgets
 * TODO Define a markup language and write a parser. refer existing libraries in other languages
 * TODO Add documentation
 * TODO Add more test cases
 * TODO Add more samples
-* TODO Create sample PDFs to showcase in multiple languages
+* TODO Create sample PDFs to showcase in multiple languages 
+  INPROGRESS : Santhosh
 * TODO Test/Fix the library in windows. Document the build steps
 * TODO Have a reStructuredText parser and PDF converter
 * TODO PDF Metadata support 
 * TODO PDF Merge feature
 * TODO Support Markmin markup language http://web2py.googlecode.com/hg/gluon/contrib/markmin/markmin.html
 * TODO Support Markdown markup language
+* TODO Add a tree widget- such as table of contents - similar to ol, ul, li tags of HTML. Should support arbitrary depth
+* TODO The header and footer should have configurable alignment, 3 positions(left, middle, right). Should take inputs for these 3 positions
+* TODO Header and footer should have configurable line - thickness should be configurable. 
+* TODO Add color support to the parent widget so that it is applicable for all widgets
+* TODO Fix the wiki2pdfs table of content alignment and hierarchy issue
+* TODO Add image support for wiki2pdf
+* TODO Image should be able to place within paragraph.
+* TODO Add support for Multicolumn paragraphs
+* TODO Create a Label widget and wrap h1,h2,h3 etc around that
+  INPROGRESS: Santhosh
+* TODO Add style definition feature. - support for predefined externalized styles for widgets.
+* TODO Image widget should have a configurable description.
+
