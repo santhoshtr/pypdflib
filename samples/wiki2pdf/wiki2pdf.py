@@ -33,21 +33,35 @@ from pyquery import PyQuery as pq
 import urllib
 import urllib2
 
+lang_codes = {'en':'en_US',
+              'ml':'ml_IN',
+              'kn':'kn_IN',
+              'as':'as_IN',
+              'gu':'gu_IN',
+              'bn':'bn_IN',
+              'hi':'hi_IN',
+              'mr':'mr_IN',
+              'or':'or_IN',
+              'pa':'pa_IN',
+              'ta':'ta_IN',
+              'te':'te_IN'}
+
 class Wikiparser(SGMLParser):
     def __init__(self, url, verbose=0):
         "Initialise an object, passing 'verbose' to the superclass."
         SGMLParser.__init__(self, verbose)
         self.hyperlinks = []
         self.url = url
+        self.language = detect_language(url)
         self.pdf = PDFWriter(self.url.split("/")[-1] +".pdf",595, 842)
         header = Header(text_align = pango.ALIGN_CENTER)
         #TODO Alignment not working.
         header.set_text(self.url)
         self.pdf.set_header(header)
         self.pdf.move_context(0,500)
-        h1= Text(self.url.split("/")[-1],font="Dyuthi",font_size=32) 
+        h1= Text(self.url.split("/")[-1],font="Serif",font_size=32) 
         self.pdf.add_text(h1)
-        h2= Text(self.url,font="Rachana",font_size=16) 
+        h2= Text(self.url,font="Serif",font_size=16) 
         self.pdf.add_text(h2)
         footer = Footer(text_align = pango.ALIGN_CENTER)
         footer.set_text("wiki2pdf")
@@ -86,7 +100,7 @@ class Wikiparser(SGMLParser):
         
     def end_h1(self):
         self.h1=False
-        h1= Text(self.buffer,font="Dyuthi",font_size=16) 
+        h1= Text(self.buffer,font="Serif",font_size=16) 
         self.pdf.add_text(h1)
         self.buffer = None
         
@@ -97,7 +111,7 @@ class Wikiparser(SGMLParser):
     def end_h2(self):
         self.h2=False
         if self.buffer and self.buffer.strip()>"":
-            h2= Text(self.buffer,font="Rachana",font_size=14) 
+            h2= Text(self.buffer,font="Serif",font_size=14) 
             self.pdf.add_text(h2)
         self.buffer = None
         
@@ -146,9 +160,13 @@ class Wikiparser(SGMLParser):
         
     def end_p(self) :
         self.p=False
-        para = Paragraph(text=self.buffer, font="Rachana",font_size=10,)
+        para = Paragraph(text=self.buffer, font="Serif",font_size=10,)
         para.set_justify(True)
-        para.language = "ml_IN"
+        if self.language:
+            para.language = self.language
+        else:
+            para.language = None
+            
         para.set_hyphenate(True)
         self.pdf.add_paragraph(para)   
         self.buffer = None
@@ -183,6 +201,26 @@ def cleanup(page):
     for section in unwanted_divs:
         document.remove(section.strip())
     return document.wrap('<div></div>').html().encode("utf-8")
+
+def detect_language(url):
+    """
+    
+    Arguments:
+    - `url`: Input url inform en.wikipedia.org
+    return language code for the url
+    """
+
+    # Split on .
+    # ml.wikipedia.org/ becomes
+    # [ml,wikipedia,org/]
+
+    if url.startswith("http://"):
+        url = url.split("http://")[1]
+        
+    url_pieces = url.split(".")
+    return lang_codes.get(url_pieces[0],None)
+    
+
     
     
 if __name__=="__main__":
