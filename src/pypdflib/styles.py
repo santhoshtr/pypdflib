@@ -33,6 +33,13 @@ ATTRS = ('font', 'font_size', 'border', 'margin', 'padding', 'align', 'valign', 
 def rgba_to_cairo (r, g, b, a):
     return (r/65535.0, g/65535.0, b/65535.0, a/65535.0)
 
+class Color(object):
+	def __init__ (self, red, green, blue, alpha=1.0):
+		self.red = red
+		self.green = green
+		self.blue = blue
+		self.alpha = alpha
+		
 class BorderSide (object):
     def __init__ (self, width=0, color=None, dash=None, round=0):
         self.width = width

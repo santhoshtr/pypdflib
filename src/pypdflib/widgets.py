@@ -23,6 +23,7 @@
 import pango
 from utils import Hyphenator
 from utils import normalizer
+from styles import Color
 class Widget(object):
     
     def __init__(self,style = None):
@@ -36,6 +37,7 @@ class Widget(object):
         self.hyphenate = False
         self.language = None
         self.justify = True
+        self.color = Color(0, 0, 0, 1.0)
         
     def set_justify(self, justify):
         self.justify = justify

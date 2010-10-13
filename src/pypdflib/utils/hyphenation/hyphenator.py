@@ -1,19 +1,24 @@
-"""
+#!/usr/bin/python
+#-*- coding:utf-8 -*-
+# pypdflib/utils/hyphenation/hyphenator.py
 
-This is a Pure Python module to hyphenate text.
+# pypdflib is a pango/cairo framework for generating reports.
+# Copyright © 2010  Santhosh Thottingal <santhosh.thottingal@gmail.com>
 
-It is inspired by Ruby's Text::Hyphen, but currently reads standard *.dic files,
-that must be installed separately.
-
-In the future it's maybe nice if dictionaries could be distributed together with
-this module, in a slightly prepared form, like in Ruby's Text::Hyphen.
-
-Wilbert Berendsen, March 2008
-info@wilbertberendsen.nl
-
-License: LGPL.
-
-"""
+# This file is part of pypdflib.
+#
+# pypdflib is free software: you can redistribute it and/or modify
+# it under the terms of the GNU Lesser General Public License as published by
+# the Free Software Foundation, either version 3 of the License, or
+# (at your option) any later version.  
+#
+# pypdflib is distributed in the hope that it will be useful,
+# but WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+# GNU Lesser General Public License for more details.
+#
+# You should have received a copy of the GNU Lesser General Public License
+# along with pypdflib.  If not, see <http://www.gnu.org/licenses/>.
 
 import sys
 import re

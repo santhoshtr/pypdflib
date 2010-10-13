@@ -63,19 +63,20 @@ class PDFWriter():
         Add text widget
         """
         self.assert_page_break()
-        h1_font_description = pango.FontDescription()
-        h1_font_description.set_family(text.font)
-        h1_font_description.set_size((int)(text.font_size* pango.SCALE))
-        h1_layout = pangocairo.CairoContext(self.context).create_layout()
-        h1_layout.set_font_description(h1_font_description)
-        h1_layout.set_text(str(text.text))
-        ink_rect, logical_rect = h1_layout.get_extents()
+        text_font_description = pango.FontDescription()
+        text_font_description.set_family(text.font)
+        text_font_description.set_size((int)(text.font_size* pango.SCALE))
+        text_layout = pangocairo.CairoContext(self.context).create_layout()
+        text_layout.set_font_description(text_font_description)
+        text_layout.set_text(str(text.text))
+        ink_rect, logical_rect = text_layout.get_extents()
         if self.position_y==0:
             self.position_y+=self.top_margin 
         self.position_y+=self.line_width*1
         self.assert_page_break()
         self.context.move_to(self.left_margin, self.position_y)
-        self.pc.show_layout(h1_layout)
+        self.context.set_source_rgba (text.color.red,text.color.green, text.color.blue,text.color.alpha)
+        self.pc.show_layout(text_layout)
         self.position_y+=logical_rect[3]/pango.SCALE+self.para_break_width
   
         
@@ -93,6 +94,7 @@ class PDFWriter():
         ink_rect, logical_rect = footer_layout.get_extents()
         y_position= self.height - self.bottom_margin- logical_rect[3]/pango.SCALE
         self.context.move_to(self.width/2, y_position)
+        self.context.set_source_rgba (footer.color.red,footer.color.green, footer.color.blue,footer.color.alpha)
         self.pc.show_layout(footer_layout)
         self.draw_line(y_position)
         self.ybottom = y_position-self.line_width
@@ -111,6 +113,7 @@ class PDFWriter():
             header_layout.set_text(str(header.text))
         ink_rect, logical_rect = header_layout.get_extents()
         self.context.move_to(self.left_margin, self.top_margin)
+        self.context.set_source_rgba (header.color.red,header.color.green, header.color.blue,header.color.alpha)
         self.pc.show_layout(header_layout)
         y_position = self.top_margin+(logical_rect[3] / pango.SCALE)
         self.draw_line(y_position)
@@ -155,6 +158,7 @@ class PDFWriter():
                 else:
                     xstart = 1.0 * logical_rect[0] / pango.SCALE
                     self.context.rel_move_to(xstart, 0)
+                    self.context.set_source_rgba (paragraph.color.red,paragraph.color.green, paragraph.color.blue,paragraph.color.alpha)
                     self.pc.show_layout_line( line)
                     line_height = (int)(logical_rect[3] / pango.SCALE)
                     self.context.rel_move_to(-xstart, line_height )
