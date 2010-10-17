@@ -25,32 +25,33 @@ import pango
 import pangocairo
 class PDFWriter():
 
-    def __init__(self,filename, width, height):
-        self.width=width
-        self.height=height
-        surface = cairo.PDFSurface(filename, self.width, self.height)
+    def __init__(self,filename, paper):
+        self.width = paper.width
+        self.height = paper.height
+        surface = cairo.PDFSurface(filename, self.width, self.height, pointsize=1)
         self.context = cairo.Context(surface)
         self.context.set_antialias(cairo.ANTIALIAS_SUBPIXEL)
         self.pc = pangocairo.CairoContext(self.context)
-        self.position_x=0
-        self.position_y=0
-        self.left_margin= self.width*0.1
-        self.right_margin= self.width*0.1
-        self.top_margin= self.width*0.1
-        self.bottom_margin= self.width*0.1
-        self.line_width= 10
-        self.font_size= 10
+        self.position_x = 0
+        self.position_y = 0
+        self.left_margin = self.width*0.1
+        self.right_margin = self.width*0.1
+        self.top_margin = self.width*0.1
+        self.bottom_margin = self.width*0.1
+        self.line_width = 10
+        self.font_size = 10
         self.para_break_width = 5
-        self.page_num=0
+        self.page_num = 0
         self.ybottom = self.height - self.bottom_margin*2
-        self.header=None
-        self.footer=None
+        self.header = None
+        self.footer = None
         
     def set_header(self, header):
         """
         Sets the header of the page
         """
         self.header = header 
+        self.write_header(self.header)
         
     def set_footer(self, footer):
         """
@@ -62,17 +63,18 @@ class PDFWriter():
         """
         Add text widget
         """
-        self.assert_page_break()
+
         text_font_description = pango.FontDescription()
         text_font_description.set_family(text.font)
         text_font_description.set_size((int)(text.font_size* pango.SCALE))
         text_layout = pangocairo.CairoContext(self.context).create_layout()
         text_layout.set_font_description(text_font_description)
+        text_layout.set_width((int)((self.width - self.left_margin-self.right_margin) * pango.SCALE))
         text_layout.set_text(str(text.text))
         ink_rect, logical_rect = text_layout.get_extents()
         if self.position_y==0:
             self.position_y+=self.top_margin 
-        self.position_y+=self.line_width*1
+        self.position_y+=self.line_width
         self.assert_page_break()
         self.context.move_to(self.left_margin, self.position_y)
         self.context.set_source_rgba (text.color.red,text.color.green, text.color.blue,text.color.alpha)
@@ -117,7 +119,7 @@ class PDFWriter():
         self.pc.show_layout(header_layout)
         y_position = self.top_margin+(logical_rect[3] / pango.SCALE)
         self.draw_line(y_position)
-        self.position_y = y_position + self.line_width
+        self.position_y = y_position + self.line_width*2
         
     def draw_line(self,y_position):
         self.context.move_to(self.left_margin, y_position)
@@ -169,9 +171,8 @@ class PDFWriter():
                     self.write_header(self.header)
                     if self.footer:
                         self.footer.set_text(str(self.page_num))
-                        self.write_footer(self.footer)
+                    self.write_footer(self.footer)
                     self.context.show_page()
-                    
                     break
                     
             first_line = False
@@ -184,7 +185,8 @@ class PDFWriter():
         """
         self.page_num= self.page_num+1
         self.write_header(self.header)
-        self.footer.set_text(str(self.page_num))
+        if self.footer:
+            self.footer.set_text(str(self.page_num))
         self.write_footer(self.footer)
         self.context.show_page()
     
@@ -208,7 +210,7 @@ class PDFWriter():
                 x1+=width
             y1+=height    
             x1= self.left_margin   
-            self.position_y+=height
+            self.position_y += height
                 
     def draw_cell(self, cell, x1, y1, x2, y2):
         cell_font_description = pango.FontDescription()
@@ -300,4 +302,5 @@ class PDFWriter():
         """
         self.position_x += xoffset
         self.position_y += yoffset
+        
         
