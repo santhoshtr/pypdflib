@@ -53,7 +53,7 @@ class Wikiparser(SGMLParser):
         self.hyperlinks = []
         self.url = url
         self.language = detect_language(url)
-        self.pdf = PDFWriter(self.url.split("/")[-1] +".pdf",595, 842)
+        self.pdf = PDFWriter(self.url.split("/")[-1] +".pdf", StandardPaper.A4)
         header = Header(text_align = pango.ALIGN_CENTER)
         #TODO Alignment not working.
         header.set_text(self.url)
