@@ -1,0 +1,5 @@
+A restructuredtext to PDF conversion program using pypdflib.
+RestructuredText is a simple text markup language.
+Use the following syntax for running this program:
+
+python rest2pdf file.rst output.pdf
