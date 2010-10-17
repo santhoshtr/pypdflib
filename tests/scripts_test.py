@@ -24,11 +24,11 @@ import sys
 sys.path.append("../src/")  #not good!
 from pypdflib.writer import PDFWriter
 from pypdflib.widgets import *
-from pypdflib.styles import Color
+from pypdflib.styles import *
 import pango
 
 if __name__=="__main__":
-    pdf = PDFWriter("scripts.pdf",595, 842)
+    pdf = PDFWriter("scripts.pdf",StandardPaper.A4)
     header = Header(text_align = pango.ALIGN_CENTER)
     #TODO Alignment not working.
     header.set_text("test header")
@@ -40,7 +40,7 @@ if __name__=="__main__":
     h1= Text("Samples",font_size=16) 
     pdf.add_text(h1)
     h2= Text("Malayalam",font_size=14) 
-    h2.color = Color(0.0,0.0,0.8,1.0)
+    h2.color = StandardColors.Blue
     pdf.add_text(h2)
     
     para_file_malayalam=open("malayalam.txt")
