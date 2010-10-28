@@ -28,3 +28,10 @@ o [vasudev] TODO fix the header footer alignment
 * TODO Add style definition feature. - support for predefined externalized styles for widgets.
 * TODO Image widget should have a configurable description.
 
+---
+Copyright (C) 2010, Santhosh Thottingal.
+
+Copying and distribution of this file, with or without modification,
+are permitted in any medium without royalty provided the copyright
+notice and this notice are preserved.  This file is offered as-is,
+without warranty of any kind.
