@@ -43,7 +43,7 @@ class Widget(object):
         self.justify = justify
         
     def set_hyphenate(self, hyphenate):
-        self.hiphenate = hyphenate
+        self.hyphenate = hyphenate
         
     def set_language(self, language):
         self.language = language
