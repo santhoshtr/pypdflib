@@ -53,15 +53,17 @@ class Wikiparser(SGMLParser):
         self.hyperlinks = []
         self.url = url
         self.language = detect_language(url)
-        self.pdf = PDFWriter(self.url.split("/")[-1] +".pdf", StandardPaper.A4)
+        self.pdf = PDFWriter(urllib.unquote(self.url.split("/")[-1]) +".pdf", StandardPaper.A4)
         header = Header(text_align = pango.ALIGN_CENTER)
         #TODO Alignment not working.
-        header.set_text(self.url)
+        header.set_text(urllib.unquote(self.url))
         self.pdf.set_header(header)
         self.pdf.move_context(0,500)
-        h1= Text(self.url.split("/")[-1],font="Serif",font_size=32) 
+        h1= Text(urllib.unquote(self.url.split("/")[-1]),font="FreeSerif",font_size=32) 
+        h1.color = StandardColors.Blue
         self.pdf.add_text(h1)
-        h2= Text(self.url,font="Serif",font_size=16) 
+        h2= Text(urllib.unquote(self.url),font="FreeSerif",font_size=16) 
+        h2.color = StandardColors.Blue
         self.pdf.add_text(h2)
         footer = Footer(text_align = pango.ALIGN_CENTER)
         footer.set_text("wiki2pdf")
@@ -100,7 +102,8 @@ class Wikiparser(SGMLParser):
         
     def end_h1(self):
         self.h1=False
-        h1= Text(self.buffer,font="Serif",font_size=16) 
+        h1= Text(self.buffer,font="FreeSerif",font_size=16) 
+        h1.color = StandardColors.Blue
         self.pdf.add_text(h1)
         self.buffer = None
         
@@ -111,7 +114,8 @@ class Wikiparser(SGMLParser):
     def end_h2(self):
         self.h2=False
         if self.buffer and self.buffer.strip()>"":
-            h2= Text(self.buffer,font="Serif",font_size=14) 
+            h2= Text(self.buffer,font="FreeSerif",font_size=14) 
+            h2.color = StandardColors.Blue
             self.pdf.add_text(h2)
         self.buffer = None
         
@@ -160,7 +164,7 @@ class Wikiparser(SGMLParser):
         
     def end_p(self) :
         self.p=False
-        para = Paragraph(text=self.buffer, font="Serif",font_size=10,)
+        para = Paragraph(text=self.buffer, font="FreeSerif",font_size=10,)
         para.set_justify(True)
         if self.language:
             para.language = self.language
@@ -195,7 +199,7 @@ def cleanup(page):
     div#jump-to-nav, div.top, div#column-one, div#siteNotice, div#purl, div#head,div#footer, div#head-base, div#page-base, div#stub, div#noprint,
     div#disambig,div.NavFrame,#colophon,.editsection,.toctoggle,.tochidden,.catlinks,.navbox,.sisterproject,.ambox,
     .toccolours,.topicondiv#f-poweredbyico,div#f-copyrightico,div#featured-star,li#f-viewcount,
-    li#f-about,li#f-disclaimer,li#f-privacy,.portal, #footer, #mw-head
+    li#f-about,li#f-disclaimer,li#f-privacy,.portal, #footer, #mw-head, #toc
     """
     unwanted_divs = unwanted_sections_list.split(",")
     for section in unwanted_divs:
