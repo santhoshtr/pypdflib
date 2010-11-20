@@ -21,6 +21,8 @@
 # along with pypdflib.  If not, see <http://www.gnu.org/licenses/>.
 
 import pango
+import StringIO
+from PIL import Image as pil_image
 from utils import Hyphenator
 from utils import normalizer
 from styles import *
@@ -273,9 +275,16 @@ class Image(Widget):
         self.scale_x = scale_x
         self.scale_y = scale_y
         self.padding_bottom = padding_bottom
-        
+        self.image_data = None
     def set_width(self, width):
         self.width = width
+    
+    def set_image_file(self, imagefile):
+        self.image_file = imagefile
+        image = pil_image.open(imagefile)
+        self.image_data = StringIO.StringIO()
+        image.save(self.image_data, format="PNG")
+        self.image_data.seek(0) # rewind
         
     def set_height(self, height):
         self.height = height
