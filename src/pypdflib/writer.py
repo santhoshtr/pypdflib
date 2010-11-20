@@ -40,7 +40,7 @@ class PDFWriter():
         self.bottom_margin = self.width*0.1
         self.line_width = 10
         self.font_size = 10
-        self.para_break_width = 5
+        self.para_break_width = 10
         self.page_num = 0
         self.ybottom = self.height - self.bottom_margin*2
         self.header = None
@@ -72,14 +72,14 @@ class PDFWriter():
         text_layout.set_width((int)((self.width - self.left_margin-self.right_margin) * pango.SCALE))
         text_layout.set_text(str(text.text))
         ink_rect, logical_rect = text_layout.get_extents()
-        if self.position_y==0:
-            self.position_y+=self.top_margin 
-        self.position_y+=self.line_width
+        if self.position_y == 0:
+            self.position_y += self.top_margin 
+        self.position_y += self.line_width
         self.assert_page_break()
         self.context.move_to(self.left_margin, self.position_y)
         self.context.set_source_rgba (text.color.red,text.color.green, text.color.blue,text.color.alpha)
         self.pc.show_layout(text_layout)
-        self.position_y+=logical_rect[3]/pango.SCALE+self.para_break_width
+        self.position_y += logical_rect[3]/pango.SCALE+self.para_break_width
   
         
     def write_footer(self,footer):
@@ -228,7 +228,7 @@ class PDFWriter():
     def add_image(self, image):
         self.context.save ()
         self.context.move_to(self.left_margin, self.position_y)
-        image_surface = cairo.ImageSurface.create_from_png (image.image_file)
+        image_surface = cairo.ImageSurface.create_from_png (image.image_data)
         w = image_surface.get_width ()
         h = image_surface.get_height ()
         data =image_surface.get_data()
