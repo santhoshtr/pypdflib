@@ -1,3 +1,6 @@
 A sample program to demonstrate the apis of pypdflib.
 This program takes a wikipedia article URL and convert it to PDF.
 Author: Santhosh Thottingal <santhosh.thottingal@gmail.com> 
+
+All the files in this source directory is licensed under GNU Lesser General Public License version 3 or later. 
+See <http://www.gnu.org/licenses/>.
