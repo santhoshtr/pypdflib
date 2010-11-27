@@ -3,3 +3,7 @@ RestructuredText is a simple text markup language.
 Use the following syntax for running this program:
 
 python rest2pdf file.rst output.pdf
+
+
+All the files in this source directory is licensed under GNU Lesser General Public License version 3 or later. 
+See <http://www.gnu.org/licenses/>.
