@@ -35,8 +35,8 @@ long_description=(
 
 setup(
     name=name,
-    version='0.1.a1',
-    url='http://github.com/santhoshtr/pypdflib',
+    version='0.1.a2',
+    url='https://savannah.nongnu.org/projects/pypdflib',
     license='LGPL 3.0',
     description='PangoCairo based Python PDF Library',
     author='Santhosh Thottingal',
@@ -47,6 +47,6 @@ setup(
     setup_requires = ['setuptools-git'],
     namespace_packages=['pypdflib'],
     include_package_data = True,
-    install_requires=['setuptools'],
+    install_requires=['setuptools','PIL'],
     zip_safe = False,
     )
