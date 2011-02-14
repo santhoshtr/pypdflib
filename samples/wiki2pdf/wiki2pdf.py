@@ -35,7 +35,6 @@ from pyquery import PyQuery as pq
 import urllib
 import urlparse
 import urllib2
-from urllib2 import urlopen
 from urllib import urlretrieve
 
 lang_codes = {'en':'en_US',
@@ -64,10 +63,10 @@ class Wikiparser(SGMLParser):
         header.set_text(urllib.unquote(self.url))
         self.pdf.set_header(header)
         self.pdf.move_context(0, 500)
-        h1 = Text(urllib.unquote(self.url.split("/")[-1]), font="FreeSerif", font_size=32) 
+        h1 = Text(urllib.unquote(self.url.split("/")[-1]), font="serif", font_size=32) 
         h1.color = StandardColors.Blue
         self.pdf.add_text(h1)
-        h2 = Text(urllib.unquote(self.url), font="FreeSerif", font_size=16) 
+        h2 = Text(urllib.unquote(self.url), font="serif", font_size=16) 
         h2.color = StandardColors.Blue
         self.pdf.add_text(h2)
         footer = Footer(text_align=pango.ALIGN_CENTER)
