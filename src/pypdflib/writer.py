@@ -130,6 +130,7 @@ class PDFWriter():
         
     def add_paragraph(self, paragraph):
         self.position_y+=self.para_break_width
+        self.assert_page_break();
         self.position = (self.left_margin, self.position_y)
         self.context.set_source_rgba (0.0, 0.0, 0.0, 1.0)
         paragraph_layout = pangocairo.CairoContext(self.context).create_layout()
@@ -231,14 +232,17 @@ class PDFWriter():
         image_surface = cairo.ImageSurface.create_from_png (image.image_data)
         w = image_surface.get_width ()
         h = image_surface.get_height ()
+        if (self.position_y + h*0.5) > self.ybottom:
+            self.page_break()
         data =image_surface.get_data()
         stride = cairo.ImageSurface.format_stride_for_width (cairo.FORMAT_ARGB32, w)
         image_surface = cairo.ImageSurface.create_for_data(data, cairo.FORMAT_ARGB32, w, h,stride)
+        self.assert_page_break()
         self.context.scale(0.5, 0.5)
         self.context.set_source_surface (image_surface,self.left_margin/0.5, self.position_y/0.5)
         self.context.paint()
-        self.context.restore ()
-        self.position_y+= h*0.5+ image.padding_bottom
+        self.context.restore ()        
+        self.position_y+= h*0.5+ image.padding_bottom 
         
         
     def new_page(self):
