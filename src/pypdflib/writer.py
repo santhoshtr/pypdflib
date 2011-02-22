@@ -70,6 +70,7 @@ class PDFWriter():
         text_layout = pangocairo.CairoContext(self.context).create_layout()
         text_layout.set_font_description(text_font_description)
         text_layout.set_width((int)((self.width - self.left_margin-self.right_margin) * pango.SCALE))
+        text_layout.set_alignment(text.text_align)
         text_layout.set_text(str(text.text))
         ink_rect, logical_rect = text_layout.get_extents()
         if self.position_y == 0:
@@ -121,7 +122,9 @@ class PDFWriter():
         self.draw_line(y_position)
         self.position_y = y_position + self.line_width*2
         
-    def draw_line(self,y_position):
+    def draw_line(self, y_position=0):
+        if y_position ==0 :
+            y_position = self.position_y
         self.context.move_to(self.left_margin, y_position)
         self.context.set_source_rgba (0.0, 0.0, 0.0, 1.0)
         self.context.line_to(self.width-self.right_margin,  y_position)
