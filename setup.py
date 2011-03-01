@@ -35,7 +35,7 @@ long_description=(
 
 setup(
     name=name,
-    version='0.1.a2',
+    version='0.1.a3',
     url='https://savannah.nongnu.org/projects/pypdflib',
     license='LGPL 3.0',
     description='PangoCairo based Python PDF Library',
