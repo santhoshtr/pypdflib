@@ -1,0 +1,3 @@
+include *.txt 
+recursive-include samples *.txt *.py
+prune tests
