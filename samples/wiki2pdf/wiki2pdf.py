@@ -94,49 +94,47 @@ class Wikiparser(HTMLParser):
             if self.buffer != None:
                 self.buffer += data
     def handle_starttag(self, tag, attrs):
-	if tag == 'img':
-#		print "Encountered the beginning of a %s tag" % tag
-		self.start_img(attrs)
-	elif tag == 'h1':
-		self.start_h1(attrs)
-	elif tag == 'h2':
-		self.start_h2(attrs)
-	elif tag == 'li':
-		self.start_li(attrs)
-	elif tag == 'p':
-		self.start_p(attrs)
-	elif tag == 'a':
-		self.start_a(attrs)
-	elif tag == 'ul':
-		self.start_ul(attrs)
-	elif tag == 'ol':
-		self.start_ol(attrs)
-	elif tag == 'span':
-		self.start_span(attrs)
+        if tag == 'img':
+            self.start_img(attrs)
+        elif tag == 'h1':
+            self.start_h1(attrs)
+        elif tag == 'h2':
+            self.start_h2(attrs)
+        elif tag == 'li':
+            self.start_li(attrs)
+        elif tag == 'p':
+            self.start_p(attrs)
+        elif tag == 'a':
+            self.start_a(attrs)
+        elif tag == 'ul':
+            self.start_ul(attrs)
+        elif tag == 'ol':
+            self.start_ol(attrs)
+        elif tag == 'span':
+	    self.start_span(attrs)
 
 
     def handle_endtag(self, tag):
-	if tag == 'img':
-#		print "Encountered the end of a %s tag" % tag
-		self.end_img()
-	elif tag == 'h1':
-		self.end_h1()
-	elif tag == 'h2':
-		self.end_h2()
-	elif tag == 'li':
-		self.end_li()
-	elif tag == 'p':
-		self.end_p()
-	elif tag == 'a':
-		self.end_a()
-	elif tag == 'ul':
-		self.end_ul()
-	elif tag == 'ol':
-		self.end_ol()
-	elif tag == 'span':
-		self.end_span()
-
+        if tag == 'img':
+            self.end_img()
+        elif tag == 'h1':
+            self.end_h1()
+        elif tag == 'h2':
+            self.end_h2()
+        elif tag == 'li':
+            self.end_li()
+        elif tag == 'p':
+            self.end_p()
+        elif tag == 'a':
+            self.end_a()
+        elif tag == 'ul':
+            self.end_ul()
+        elif tag == 'ol':
+            self.end_ol()
+        elif tag == 'span':
+            self.end_span()
         
+
     def start_img(self, attrs):         
         src = [value for key, value in attrs if key == 'src'] 
         if src:
@@ -179,6 +177,7 @@ class Wikiparser(HTMLParser):
         
     def end_li(self):
         self.li = False
+	print self.buffer
         if self.buffer and self.buffer.strip() > "":
             if self.ul:
                 li = Text("• " + self.buffer, font_size=10) 
@@ -194,7 +193,8 @@ class Wikiparser(HTMLParser):
         self.a = False
         
     def start_ol(self, attrs):
-        self.ol = True    
+        self.ol = True
+
     def end_ol(self):
         self.ol = False
         
@@ -265,6 +265,9 @@ class Wikiparser(HTMLParser):
         infile = opener.open(self.url)
         page = infile.read()
         page = cleanup(page)
+#	f = open("test","r")
+#	page=f.read()
+#	f.close()
         "Parse the given string 's'."
         self.feed(page)
         self.close()
