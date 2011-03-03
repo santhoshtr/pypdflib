@@ -29,7 +29,7 @@ from pypdflib.widgets import *
 from pypdflib.styles import *
 import pango
 import os
-from sgmllib import SGMLParser
+from HTMLParser import HTMLParser
 
 from pyquery import PyQuery as pq
 import urllib
@@ -50,10 +50,10 @@ lang_codes = {'en':'en_US',
               'ta':'ta_IN',
               'te':'te_IN'}
 
-class Wikiparser(SGMLParser):
+class Wikiparser(HTMLParser):
     def __init__(self, url, verbose=0):
         "Initialise an object, passing 'verbose' to the superclass."
-        SGMLParser.__init__(self, verbose)
+        HTMLParser.__init__(self)
         self.hyperlinks = []
         self.url = url
         self.language = detect_language(url)
@@ -75,7 +75,7 @@ class Wikiparser(SGMLParser):
         self.pdf.page_break()
         
     def reset(self):                              
-        SGMLParser.reset(self)
+        HTMLParser.reset(self)
         self.images = []
         #TODO Alignment not working.
         self.h1 = False
@@ -93,8 +93,50 @@ class Wikiparser(SGMLParser):
         if self.p or self.h1 or self.h2 or self.a or self.span:
             if self.buffer != None:
                 self.buffer += data
-            
-                
+    def handle_starttag(self, tag, attrs):
+	if tag == 'img':
+#		print "Encountered the beginning of a %s tag" % tag
+		self.start_img(attrs)
+	elif tag == 'h1':
+		self.start_h1(attrs)
+	elif tag == 'h2':
+		self.start_h2(attrs)
+	elif tag == 'li':
+		self.start_li(attrs)
+	elif tag == 'p':
+		self.start_p(attrs)
+	elif tag == 'a':
+		self.start_a(attrs)
+	elif tag == 'ul':
+		self.start_ul(attrs)
+	elif tag == 'ol':
+		self.start_ol(attrs)
+	elif tag == 'span':
+		self.start_span(attrs)
+
+
+    def handle_endtag(self, tag):
+	if tag == 'img':
+#		print "Encountered the end of a %s tag" % tag
+		self.end_img()
+	elif tag == 'h1':
+		self.end_h1()
+	elif tag == 'h2':
+		self.end_h2()
+	elif tag == 'li':
+		self.end_li()
+	elif tag == 'p':
+		self.end_p()
+	elif tag == 'a':
+		self.end_a()
+	elif tag == 'ul':
+		self.end_ul()
+	elif tag == 'ol':
+		self.end_ol()
+	elif tag == 'span':
+		self.end_span()
+
+        
     def start_img(self, attrs):         
         src = [value for key, value in attrs if key == 'src'] 
         if src:
@@ -224,8 +266,7 @@ class Wikiparser(SGMLParser):
         page = infile.read()
         page = cleanup(page)
         "Parse the given string 's'."
-	"since sgmllib doesnt handle xhtml <br/> is simply replaced, correct solution is to move to HTMLParser"
-        self.feed(page.replace("<br/>",""))
+        self.feed(page)
         self.close()
         self.pdf.flush()
         
