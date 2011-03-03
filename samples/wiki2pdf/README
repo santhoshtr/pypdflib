@@ -4,3 +4,6 @@ Author: Santhosh Thottingal <santhosh.thottingal@gmail.com>
 
 All the files in this source directory is licensed under GNU Lesser General Public License version 3 or later. 
 See <http://www.gnu.org/licenses/>.
+
+Note: This program requires pyquery module for proper working.
+pyquery can be downloaded and installed from http://pypi.python.org/pypi/pyquery
