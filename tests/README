@@ -1,4 +1,11 @@
-Hyphenation Patterns for languages.
-
-All the files in this source directory is licensed under GNU Lesser General Public License version 3 or later. 
-See <http://www.gnu.org/licenses/>.
+File: *.txt,scripts.pdf
+License: files contains copied contents from Wikipedia which is licensed under CC-BY-SA-3.0
+         Please find copy of CC-BY-SA-3.0 in CC-BY-SA-3.0.txt
+         
+File: White_peacock.jpg
+License: taken from Wikipedia <http://en.wikipedia.org/wiki/File:White_peacock.jpg>
+         released by the author under public domain
+         
+Files: scripts_test.py,image_test.py
+License: GNU GPL 3.0+
+         See <http://www.gnu.org/licenses/>.
