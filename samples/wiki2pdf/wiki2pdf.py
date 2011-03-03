@@ -86,11 +86,12 @@ class Wikiparser(HTMLParser):
         self.ul = False
         self.ol = False
         self.span = False
+	self.reference = False
         self.buffer = None
         
     def handle_data(self, data):
         if data.strip() == "": return
-        if self.p or self.h1 or self.h2 or self.a or self.span:
+	if self.p or self.h1 or self.h2 or self.a or self.span or self.li:
             if self.buffer != None:
                 self.buffer += data
     def handle_starttag(self, tag, attrs):
@@ -180,9 +181,9 @@ class Wikiparser(HTMLParser):
 	print self.buffer
         if self.buffer and self.buffer.strip() > "":
             if self.ul:
-                li = Text("• " + self.buffer, font_size=10) 
+                li = Text("• " + self.buffer,font="FreeSerif", font_size=10) 
             else:
-                li = Text(self.buffer, font_size=10)     
+                li = Text(self.buffer,font="FreeSerif", font_size=10)     
             self.pdf.add_text(li)
         self.buffer = None
                 
@@ -194,9 +195,15 @@ class Wikiparser(HTMLParser):
         
     def start_ol(self, attrs):
         self.ol = True
-
+#        for tups in attrs:
+#	    if 'class' in tups:
+#		    if tups[1] == 'references':
+#                        self.references = True
+#
     def end_ol(self):
         self.ol = False
+#        if self.references:
+#            self.references= False
         
     def start_ul(self, attrs):
         self.ul = True    
@@ -265,9 +272,9 @@ class Wikiparser(HTMLParser):
         infile = opener.open(self.url)
         page = infile.read()
         page = cleanup(page)
-#	f = open("test","r")
-#	page=f.read()
-#	f.close()
+#        f = open("test","r")
+#        page=f.read()
+#        f.close()
         "Parse the given string 's'."
         self.feed(page)
         self.close()
