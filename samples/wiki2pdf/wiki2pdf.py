@@ -224,7 +224,8 @@ class Wikiparser(SGMLParser):
         page = infile.read()
         page = cleanup(page)
         "Parse the given string 's'."
-        self.feed(page)
+	"since sgmllib doesnt handle xhtml <br/> is simply replaced, correct solution is to move to HTMLParser"
+        self.feed(page.replace("<br/>",""))
         self.close()
         self.pdf.flush()
         
