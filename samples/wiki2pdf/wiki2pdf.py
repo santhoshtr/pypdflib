@@ -87,6 +87,7 @@ class Wikiparser(HTMLParser):
         self.ol = False
         self.span = False
 	self.reference = False
+	self.ref_counter = 0
         self.buffer = None
         
     def handle_data(self, data):
@@ -178,10 +179,13 @@ class Wikiparser(HTMLParser):
         
     def end_li(self):
         self.li = False
-	print self.buffer
+#        print self.buffer
         if self.buffer and self.buffer.strip() > "":
             if self.ul:
-                li = Text("• " + self.buffer,font="FreeSerif", font_size=10) 
+                li = Text("• " + self.buffer,font="FreeSerif", font_size=10)
+            elif self.references:
+                self.ref_counter+=1
+                li = Text(str(self.ref_counter) + ". "+ self.buffer, font = "FreeSerif", font_size=10)
             else:
                 li = Text(self.buffer,font="FreeSerif", font_size=10)     
             self.pdf.add_text(li)
@@ -195,15 +199,15 @@ class Wikiparser(HTMLParser):
         
     def start_ol(self, attrs):
         self.ol = True
-#        for tups in attrs:
-#	    if 'class' in tups:
-#		    if tups[1] == 'references':
-#                        self.references = True
-#
+        for tups in attrs:
+	    if 'class' in tups:
+		    if tups[1] == 'references':
+                        self.references = True
+
     def end_ol(self):
         self.ol = False
-#        if self.references:
-#            self.references= False
+        if self.references:
+            self.references= False
         
     def start_ul(self, attrs):
         self.ul = True    
