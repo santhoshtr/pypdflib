@@ -271,14 +271,14 @@ class Wikiparser(HTMLParser):
             pass
         return  output_filename
     def parse(self):
-#        opener = urllib2.build_opener()
-#        opener.addheaders = [('User-agent', 'Mozilla/5.0')]
-#        infile = opener.open(self.url)
-#        page = infile.read()
-#        page = cleanup(page)
-        f = open("test","r")
-        page=f.read()
-        f.close()
+        opener = urllib2.build_opener()
+        opener.addheaders = [('User-agent', 'Mozilla/5.0')]
+        infile = opener.open(self.url)
+        page = infile.read()
+        page = cleanup(page)
+#        f = open("test","r")
+#        page=f.read()
+#        f.close()
         "Parse the given string 's'."
         self.feed(page)
         self.close()
