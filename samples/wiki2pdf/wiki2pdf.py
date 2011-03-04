@@ -185,7 +185,7 @@ class Wikiparser(HTMLParser):
                 li = Text("• " + self.buffer,font="FreeSerif", font_size=10)
             elif self.references:
                 self.ref_counter+=1
-                li = Text(str(self.ref_counter) + ". "+ self.buffer, font = "FreeSerif", font_size=10)
+                li = Text(str(self.ref_counter) + ". "+ self.buffer.replace("↑",""), font = "FreeSerif", font_size=10)
             else:
                 li = Text(self.buffer,font="FreeSerif", font_size=10)     
             self.pdf.add_text(li)
