@@ -23,8 +23,8 @@
 import cairo
 import pango
 import pangocairo
+from pypdflib.widgets import *
 class PDFWriter():
-
     def __init__(self,filename, paper):
         self.width = paper.width
         self.height = paper.height
@@ -32,12 +32,12 @@ class PDFWriter():
         self.context = cairo.Context(surface)
         self.context.set_antialias(cairo.ANTIALIAS_SUBPIXEL)
         self.pc = pangocairo.CairoContext(self.context)
-        self.position_x = 0
-        self.position_y = 0
         self.left_margin = self.width*0.1
         self.right_margin = self.width*0.1
         self.top_margin = self.width*0.1
         self.bottom_margin = self.width*0.1
+        self.position_x = self.left_margin
+        self.position_y = 0
         self.line_width = 10
         self.font_size = 10
         self.para_break_width = 10
@@ -69,18 +69,24 @@ class PDFWriter():
         text_font_description.set_size((int)(text.font_size* pango.SCALE))
         text_layout = pangocairo.CairoContext(self.context).create_layout()
         text_layout.set_font_description(text_font_description)
-        text_layout.set_width((int)((self.width - self.left_margin-self.right_margin) * pango.SCALE))
+        if text.coordinates:
+            text_layout.set_width(int(text.coordinates[2]-text.coordinates[0])*pango.SCALE)
+            self.position_x = text.coordinates[0]
+            self.position_y = text.coordinates[1]
+        else:    
+            text_layout.set_width((int)((self.width - self.left_margin-self.right_margin) * pango.SCALE))
+            if self.position_y == 0:
+                self.position_y += self.top_margin 
+            self.position_y += self.line_width
         text_layout.set_alignment(text.text_align)
         text_layout.set_text(str(text.text))
         ink_rect, logical_rect = text_layout.get_extents()
-        if self.position_y == 0:
-            self.position_y += self.top_margin 
-        self.position_y += self.line_width
         self.assert_page_break()
-        self.context.move_to(self.left_margin, self.position_y)
+        self.context.move_to(self.position_x, self.position_y)
         self.context.set_source_rgba (text.color.red,text.color.green, text.color.blue,text.color.alpha)
         self.pc.show_layout(text_layout)
-        self.position_y += logical_rect[3]/pango.SCALE+self.para_break_width
+        if text.coordinates == None:
+            self.position_y += logical_rect[3]/pango.SCALE+self.para_break_width
   
         
     def write_footer(self,footer):
@@ -123,7 +129,7 @@ class PDFWriter():
         self.position_y = y_position + self.line_width*2
         
     def draw_line(self, y_position=0):
-        if y_position ==0 :
+        if y_position == 0 :
             y_position = self.position_y
         self.context.move_to(self.left_margin, y_position)
         self.context.set_source_rgba (0.0, 0.0, 0.0, 1.0)
@@ -131,6 +137,11 @@ class PDFWriter():
         self.context.stroke()
         self.position_y+= self.line_width
         
+    def line_break(self):
+        self.assert_page_break();
+        self.position_y+= self.line_width
+        self.context.move_to(self.left_margin, self.position_y)
+            
     def add_paragraph(self, paragraph):
         self.position_y+=self.para_break_width
         self.assert_page_break();
@@ -194,40 +205,36 @@ class PDFWriter():
         self.write_footer(self.footer)
         self.context.show_page()
     
-    def draw_table(self, table):
+    def add_table(self, table):
         if table.row_count == 0: 
             print("Table has no rows")
             return 
         self.context.identity_matrix()
         self.context.set_source_rgba (0.0, 0.0, 0.0, 1.0)
-        x1 = self.left_margin
-        y1 = self.top_margin
+        x1 = self.position_x
+        y1 = self.position_y 
         width=height=0
         for row in range(table.row_count):
             for column in range(table.column_count):
                 height = table.rows[row].height
-                width  = table.rows[row].cells[column].width    
+                cell = table.rows[row].cells[column]
+                width  = cell.width    
+                self.context.set_source_rgba (cell.color.red, cell.color.green, cell.color.blue, cell.color.alpha)
                 self.context.set_line_width(table.border_width)
                 self.context.rectangle(x1,y1,width,height)
                 self.context.stroke()
-                self.draw_cell(table.rows[row].cells[column],x1,y1,x1+width,y1+height)
-                x1+=width
-            y1+=height    
-            x1= self.left_margin   
+                self._draw_cell(cell, x1, y1, x1+width, y1+height)
+                x1 += width
+            y1 += height    
+            x1= self.left_margin
             self.position_y += height
                 
-    def draw_cell(self, cell, x1, y1, x2, y2):
-        cell_font_description = pango.FontDescription()
-        cell_font_description.set_family(cell.font)
-        cell_font_description.set_size((int)(cell.font_size* pango.SCALE))
-        cell_layout = pangocairo.CairoContext(self.context).create_layout()
-        cell_layout.set_width(int(x2-x1)*pango.SCALE)
-        cell_layout.set_justify(True)
-        cell_layout.set_font_description(cell_font_description)
-        cell_layout.set_text(str(cell.text))
-        ink_rect, logical_rect = cell_layout.get_extents()
-        self.context.move_to(x1,y1)
-        self.pc.show_layout(cell_layout)
+    def _draw_cell(self, cell, x1, y1, x2, y2):
+        widget = cell.content
+        if cell.content.__class__ == Text:
+            widget.coordinates = [x1, y1, x2, y2]
+            self.add_text(widget)
+        #TODO: Add other widgets
                 
     def add_image(self, image):
         self.context.save ()
