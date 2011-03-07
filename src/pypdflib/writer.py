@@ -59,7 +59,7 @@ class PDFWriter():
         """
         self.footer = footer
         
-    def add_text(self, text):
+    def add_text(self, text, markup=False):
         """
         Add text widget
         """
@@ -81,7 +81,10 @@ class PDFWriter():
             self.position_y = text.coordinates[1]
             
         text_layout.set_alignment(text.text_align)
-        text_layout.set_text(str(text.text))
+        if markup:
+            text_layout.set_text(str(text.text))
+        else:
+            text_layout.set_markup(str(text.text))    
         ink_rect, logical_rect = text_layout.get_extents()
         self.assert_page_break()
         self.context.move_to(self.position_x, self.position_y)
