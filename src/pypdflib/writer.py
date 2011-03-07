@@ -69,15 +69,17 @@ class PDFWriter():
         text_font_description.set_size((int)(text.font_size* pango.SCALE))
         text_layout = pangocairo.CairoContext(self.context).create_layout()
         text_layout.set_font_description(text_font_description)
-        if text.coordinates:
-            text_layout.set_width(int(text.coordinates[2]-text.coordinates[0])*pango.SCALE)
-            self.position_x = text.coordinates[0]
-            self.position_y = text.coordinates[1]
-        else:    
+        self.position_x = self.left_margin
+        if text.coordinates== None or text.coordinates == [0,0,0,0]:
             text_layout.set_width((int)((self.width - self.left_margin-self.right_margin) * pango.SCALE))
             if self.position_y == 0:
                 self.position_y += self.top_margin 
             self.position_y += self.line_width
+        else:    
+            text_layout.set_width(int(text.coordinates[2]-text.coordinates[0])*pango.SCALE)
+            self.position_x = text.coordinates[0]
+            self.position_y = text.coordinates[1]
+            
         text_layout.set_alignment(text.text_align)
         text_layout.set_text(str(text.text))
         ink_rect, logical_rect = text_layout.get_extents()
@@ -85,7 +87,7 @@ class PDFWriter():
         self.context.move_to(self.position_x, self.position_y)
         self.context.set_source_rgba (text.color.red,text.color.green, text.color.blue,text.color.alpha)
         self.pc.show_layout(text_layout)
-        if text.coordinates == None:
+        if text.coordinates== None or  text.coordinates == [0,0,0,0]:
             self.position_y += logical_rect[3]/pango.SCALE+self.para_break_width
   
         
