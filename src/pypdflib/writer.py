@@ -59,7 +59,7 @@ class PDFWriter():
         """
         self.footer = footer
         
-    def add_text(self, text, markup=False):
+    def add_text(self, text):
         """
         Add text widget
         """
@@ -81,10 +81,10 @@ class PDFWriter():
             self.position_y = text.coordinates[1]
             
         text_layout.set_alignment(text.text_align)
-        if markup:
-            text_layout.set_text(str(text.text))
+        if text.is_markup:
+            text_layout.set_markup(str(text.markup))
         else:
-            text_layout.set_markup(str(text.text))    
+            text_layout.set_text(str(text.text))    
         ink_rect, logical_rect = text_layout.get_extents()
         self.assert_page_break()
         self.context.move_to(self.position_x, self.position_y)
@@ -102,7 +102,7 @@ class PDFWriter():
         footer_layout = pangocairo.CairoContext(self.context).create_layout()
         footer_layout.set_font_description(footer_font_description)
         if footer.markup:
-            footer_layout.set_text(str(footer.markup))
+            footer_layout.set_markup(str(footer.markup))
         else:
             footer_layout.set_text(str(footer.text))
         ink_rect, logical_rect = footer_layout.get_extents()
@@ -160,7 +160,10 @@ class PDFWriter():
         paragraph_layout.set_width((int)((self.width - self.left_margin-self.right_margin) * pango.SCALE))
         if(paragraph.justify):
             paragraph_layout.set_justify(True)
-        paragraph_layout.set_text(paragraph.text+"\n")#fix it , adding new line to keep the looping correct?!
+        if paragraph.is_markup:
+            paragraph_layout.set_markup(paragraph.markup+"\n")
+        else:
+            paragraph_layout.set_text(paragraph.text+"\n")#fix it , adding new line to keep the looping correct?!
         self.context.move_to(*self.position)
         pango_layout_iter = paragraph_layout.get_iter();
         itr_has_next_line=True
