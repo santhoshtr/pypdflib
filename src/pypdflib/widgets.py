@@ -39,6 +39,7 @@ class Widget(object):
         self.hyphenate = False
         self.language = None
         self.justify = True
+        self.is_markup = False
         self.color = StandardColors.Black
         self.coordinates = [0,0,0,0]
         
@@ -92,7 +93,9 @@ class Paragraph(Widget):
         if text_align:
             self.text_align = text_align
         else:
-            self.text_align = pango.ALIGN_LEFT    
+            self.text_align = pango.ALIGN_LEFT
+        if markup:
+            self.is_markup = True
         self.text = text
         self.markup = markup
    
@@ -103,6 +106,7 @@ class Paragraph(Widget):
 
     def set_markup(self, markup):
         self.markup = markup
+        self.is_markup = True
 
 
 class Header(Widget):
@@ -121,6 +125,8 @@ class Header(Widget):
             self.text_align = text_align
         else:
             self.text_align = pango.ALIGN_LEFT    
+        if markup:
+            self.is_markup = True
         self.text = text
         self.markup = markup
         self.underline =  True
@@ -131,6 +137,7 @@ class Header(Widget):
         
     def set_markup(self, markup):
         self.markup = markup
+        self.is_markup = True
     
     def set_underline(self, thickness=None):
         self.underline =  True
@@ -153,6 +160,8 @@ class Text(Widget):
             self.text_align = text_align
         else:
             self.text_align = pango.ALIGN_LEFT    
+        if markup:
+            self.is_markup = True
         self.text = text
         self.markup = markup
         self.underline =  False
@@ -163,6 +172,7 @@ class Text(Widget):
         
     def set_markup(self, markup):
         self.markup = markup
+        self.is_markup = True
     
     def set_underline(self, thickness = None):
         self.underline =  True
@@ -186,6 +196,8 @@ class Footer(Widget):
             self.text_align = text_align
         else:
             self.text_align = pango.ALIGN_LEFT    
+        if markup:
+            self.is_markup = True
 
         self.text = text
         self.markup = markup
@@ -198,6 +210,7 @@ class Footer(Widget):
         
     def set_markup(self, markup):
         self.markup = markup
+        self.is_markup = True
     
     def set_underline(self, thickness=None):
         self.underline =  True
