@@ -82,7 +82,7 @@ class PDFWriter():
             
         text_layout.set_alignment(text.text_align)
         if text.is_markup:
-            text_layout.set_markup(str(text.markup))
+            text_layout.set_markup(str(text.text))
         else:
             text_layout.set_text(str(text.text))    
         ink_rect, logical_rect = text_layout.get_extents()
@@ -145,7 +145,8 @@ class PDFWriter():
     def line_break(self):
         self.assert_page_break();
         self.position_y+= self.line_width
-        self.context.move_to(self.left_margin, self.position_y)            
+        self.context.move_to(self.left_margin, self.position_y)
+
     def add_paragraph(self, paragraph):
         self.position_y+=self.para_break_width
         self.assert_page_break();

@@ -165,7 +165,9 @@ class Text(Widget):
             self.text_align = pango.ALIGN_LEFT    
         if markup:
             self.is_markup = True
-        self.text = text
+            self.text = markup
+        else:
+            self.text = text
         self.markup = markup
         self.underline =  False
         self.underline_thickness = 0.0
