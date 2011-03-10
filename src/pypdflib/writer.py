@@ -92,7 +92,6 @@ class PDFWriter():
         self.pc.show_layout(text_layout)
         if text.coordinates== None or  text.coordinates == [0,0,0,0]:
             self.position_y += logical_rect[3]/pango.SCALE+self.para_break_width
-  
         
     def write_footer(self,footer):
         if footer == None: return 
