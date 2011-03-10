@@ -192,7 +192,7 @@ class Wikiparser(HTMLParser):
         if self.buffer and self.buffer.strip() > "":
             if self.ul:
                 li = Text(markup = "• " + self.buffer,font="FreeSerif", font_size=10)
-            elif self.references:
+            elif self.reference:
                 self.ref_counter+=1
                 li = Text(markup = str(self.ref_counter) + ". "+ self.buffer.replace("↑",""), font = "FreeSerif", font_size=10)
             else:
@@ -220,12 +220,12 @@ class Wikiparser(HTMLParser):
         for tups in attrs:
 	    if 'class' in tups:
 		if tups[1] == 'references':
-                    self.references = True
+                    self.reference = True
 
     def end_ol(self):
         self.ol = False
-        if self.references:
-            self.references= False
+        if self.reference:
+            self.reference= False
         
     def start_ul(self, attrs):
         self.ul = True    
@@ -251,7 +251,7 @@ class Wikiparser(HTMLParser):
             para = Paragraph(markup=self.buffer,text = self.buffer, font="FreeSerif", font_size=10,)
             self.sup = False
         else:
-            print self.buffer
+            #print self.buffer
             para = Paragraph(text=self.buffer, font="FreeSerif", font_size=10,)
            
         para.set_justify(True)
