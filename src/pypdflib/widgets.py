@@ -96,7 +96,9 @@ class Paragraph(Widget):
             self.text_align = pango.ALIGN_LEFT
         if markup:
             self.is_markup = True
-        self.text = text
+            self.text = markup
+        else:
+            self.text = text
         self.markup = markup
    
         
@@ -106,6 +108,7 @@ class Paragraph(Widget):
 
     def set_markup(self, markup):
         self.markup = markup
+        self.text = markup
         self.is_markup = True
 
 

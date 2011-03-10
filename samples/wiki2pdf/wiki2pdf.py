@@ -89,6 +89,7 @@ class Wikiparser(HTMLParser):
         self.reference = False
 	self.ref_counter = 0
         self.buffer = None
+        self.sup = False
         
     def handle_data(self, data):
         if data.strip() == "": return
@@ -114,6 +115,11 @@ class Wikiparser(HTMLParser):
             self.start_ol(attrs)
         elif tag == 'span':
 	    self.start_span(attrs)
+        elif tag == 'sup' or tag == 'sub' or tag == 'b' or tag == 'i' or tag == 's' or tag == 'small' or tag == 'big' or tag == 'tt' or tag == 'u':
+            if self.reference == False:
+               self.sup = True
+               if self.buffer != None:
+                  self.buffer += "<"+tag+">"
 
 
     def handle_endtag(self, tag):
@@ -135,6 +141,9 @@ class Wikiparser(HTMLParser):
             self.end_ol()
         elif tag == 'span':
             self.end_span()
+        elif tag == 'sup' or tag == 'sub' or tag == 'b' or tag == 'i' or tag == 's' or tag == 'small' or tag == 'big' or tag == 'tt' or tag == 'u':
+            if self.sup and self.buffer != None:
+                self.buffer += "</"+str(tag)+">"
         
 
     def start_img(self, attrs):         
@@ -182,12 +191,12 @@ class Wikiparser(HTMLParser):
 #        print self.buffer
         if self.buffer and self.buffer.strip() > "":
             if self.ul:
-                li = Text("• " + self.buffer,font="FreeSerif", font_size=10)
+                li = Text(markup = "• " + self.buffer,font="FreeSerif", font_size=10)
             elif self.references:
                 self.ref_counter+=1
-                li = Text(str(self.ref_counter) + ". "+ self.buffer.replace("↑",""), font = "FreeSerif", font_size=10)
+                li = Text(markup = str(self.ref_counter) + ". "+ self.buffer.replace("↑",""), font = "FreeSerif", font_size=10)
             else:
-                li = Text(self.buffer,font="FreeSerif", font_size=10)     
+                li = Text(markup = self.buffer,font="FreeSerif", font_size=10)     
             self.pdf.add_text(li)
         self.buffer = None
                 
@@ -196,13 +205,22 @@ class Wikiparser(HTMLParser):
         
     def end_a(self):
         self.a = False
+    
+#    def start_sup(self, attrs):         
+#        self.sup = True
+#        self.buffer += "<sup>"
+#        
+#    def end_sup(self):
+#        print "test"
+#        self.buffer += "</sup>"
+
         
     def start_ol(self, attrs):
         self.ol = True
         for tups in attrs:
 	    if 'class' in tups:
-		    if tups[1] == 'references':
-                        self.references = True
+		if tups[1] == 'references':
+                    self.references = True
 
     def end_ol(self):
         self.ol = False
@@ -229,7 +247,13 @@ class Wikiparser(HTMLParser):
         
     def end_p(self) :
         self.p = False
-        para = Paragraph(text=self.buffer, font="FreeSerif", font_size=10,)
+        if self.sup:
+            para = Paragraph(markup=self.buffer,text = self.buffer, font="FreeSerif", font_size=10,)
+            self.sup = False
+        else:
+            print self.buffer
+            para = Paragraph(text=self.buffer, font="FreeSerif", font_size=10,)
+           
         para.set_justify(True)
         if self.language:
             para.language = self.language
@@ -271,14 +295,17 @@ class Wikiparser(HTMLParser):
             pass
         return  output_filename
     def parse(self):
-        opener = urllib2.build_opener()
-        opener.addheaders = [('User-agent', 'Mozilla/5.0')]
-        infile = opener.open(self.url)
-        page = infile.read()
-        page = cleanup(page)
-#        f = open("test","r")
-#        page=f.read()
+#        opener = urllib2.build_opener()
+#        opener.addheaders = [('User-agent', 'Mozilla/5.0')]
+#        infile = opener.open(self.url)
+#        page = infile.read()
+#        page = cleanup(page)
+#        f= open("wiki_test.txt","w")
+#        f.write(page)
 #        f.close()
+        f = open("wiki_test.txt","r")
+        page=f.read()
+        f.close()
         "Parse the given string 's'."
         self.feed(page)
         self.close()

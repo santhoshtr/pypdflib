@@ -49,7 +49,7 @@ if __name__=="__main__":
     while True:
         para_content = para_file_malayalam.readline()
         if para_content ==None or para_content=="" : break 
-        para = Paragraph(markup=para_content, font="Rachana")
+        para = Paragraph(markup=para_content,text = para_content font="Serif")
         para.language = "ml_IN"
         print para_content
         pdf.add_paragraph(para)

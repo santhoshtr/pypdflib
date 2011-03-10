@@ -145,8 +145,7 @@ class PDFWriter():
     def line_break(self):
         self.assert_page_break();
         self.position_y+= self.line_width
-        self.context.move_to(self.left_margin, self.position_y)
-            
+        self.context.move_to(self.left_margin, self.position_y)            
     def add_paragraph(self, paragraph):
         self.position_y+=self.para_break_width
         self.assert_page_break();
@@ -161,7 +160,7 @@ class PDFWriter():
         if(paragraph.justify):
             paragraph_layout.set_justify(True)
         if paragraph.is_markup:
-            paragraph_layout.set_markup(paragraph.markup+"\n")
+            paragraph_layout.set_markup(paragraph.text+"\n")
         else:
             paragraph_layout.set_text(paragraph.text+"\n")#fix it , adding new line to keep the looping correct?!
         self.context.move_to(*self.position)
