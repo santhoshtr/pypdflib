@@ -117,9 +117,9 @@ class Wikiparser(HTMLParser):
 	    self.start_span(attrs)
         elif tag == 'sup' or tag == 'sub' or tag == 'b' or tag == 'i' or tag == 's' or tag == 'small' or tag == 'big' or tag == 'tt' or tag == 'u':
             if self.reference == False:
-               self.sup = True
                if self.buffer != None:
                   self.buffer += "<"+tag+">"
+                  self.sup = True
 
 
     def handle_endtag(self, tag):
@@ -226,6 +226,7 @@ class Wikiparser(HTMLParser):
         self.ol = False
         if self.reference:
             self.reference= False
+            #self.sup = False
         
     def start_ul(self, attrs):
         self.ul = True    
@@ -261,7 +262,11 @@ class Wikiparser(HTMLParser):
             para.language = None
             
         para.set_hyphenate(True)
-        self.pdf.add_paragraph(para)   
+        self.pdf.add_paragraph(para) 
+#        f= open("computer_para.txt","aw")
+#        f.write(self.buffer)
+#        f.write("\n")
+#        f.close()  
         self.buffer = None
     def set_header(self, text):
         self.header = text
@@ -300,10 +305,10 @@ class Wikiparser(HTMLParser):
         infile = opener.open(self.url)
         page = infile.read()
         page = cleanup(page)
-#        f= open("wiki_test.txt","w")
+#        f= open("computer.txt","w")
 #        f.write(page)
 #        f.close()
-#        f = open("wiki_test.txt","r")
+#        f = open("computer.txt","r")
 #        page=f.read()
 #        f.close()
         "Parse the given string 's'."

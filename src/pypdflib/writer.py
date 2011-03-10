@@ -82,7 +82,7 @@ class PDFWriter():
             
         text_layout.set_alignment(text.text_align)
         if text.is_markup:
-            text_layout.set_markup(str(text.text))
+            text_layout.set_markup(text.text)
         else:
             text_layout.set_text(str(text.text))    
         ink_rect, logical_rect = text_layout.get_extents()
@@ -161,7 +161,11 @@ class PDFWriter():
         if(paragraph.justify):
             paragraph_layout.set_justify(True)
         if paragraph.is_markup:
-            paragraph_layout.set_markup(paragraph.text+"\n")
+            #print paragraph.text
+            if paragraph.language == 'en_US':
+                paragraph_layout.set_markup(paragraph.markup+"\n")
+            else:
+                paragraph_layout.set_markup(paragraph.text+"\n")
         else:
             paragraph_layout.set_text(paragraph.text+"\n")#fix it , adding new line to keep the looping correct?!
         self.context.move_to(*self.position)
