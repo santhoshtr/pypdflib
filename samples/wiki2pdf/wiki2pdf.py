@@ -295,17 +295,17 @@ class Wikiparser(HTMLParser):
             pass
         return  output_filename
     def parse(self):
-#        opener = urllib2.build_opener()
-#        opener.addheaders = [('User-agent', 'Mozilla/5.0')]
-#        infile = opener.open(self.url)
-#        page = infile.read()
-#        page = cleanup(page)
+        opener = urllib2.build_opener()
+        opener.addheaders = [('User-agent', 'Mozilla/5.0')]
+        infile = opener.open(self.url)
+        page = infile.read()
+        page = cleanup(page)
 #        f= open("wiki_test.txt","w")
 #        f.write(page)
 #        f.close()
-        f = open("wiki_test.txt","r")
-        page=f.read()
-        f.close()
+#        f = open("wiki_test.txt","r")
+#        page=f.read()
+#        f.close()
         "Parse the given string 's'."
         self.feed(page)
         self.close()
