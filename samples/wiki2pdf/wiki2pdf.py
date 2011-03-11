@@ -274,7 +274,7 @@ class Wikiparser(HTMLParser):
         
     def end_td(self):
         self.td = False
-        print self.buffer
+#        print self.buffer + " " + str(len(self.buffer))
         cell_content = Text(self.buffer,font_size=10)
         cell_content.color = Color(0.0,0.0,0.0,1.0)
         cell = Cell(cell_content, font_size=8,width=100)
@@ -288,12 +288,13 @@ class Wikiparser(HTMLParser):
         
     def end_th(self):
         self.th = False
-        #print self.buffer
+ #       print self.buffer + " " + str(len(self.buffer))
         cell_content = Text(self.buffer,font_size=10)
         cell_content.color = Color(0.0,0.0,0.0,1.0)
         cell = Cell(cell_content, font_size=8,width=100)
         self.row.add_cell(cell)
         self.column_counter+=1
+        self.current_counter+=1
         self.buffer = None
     
 #    def start_sup(self, attrs):         
