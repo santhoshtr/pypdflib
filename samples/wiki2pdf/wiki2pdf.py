@@ -86,18 +86,25 @@ class Wikiparser(HTMLParser):
         self.ul = False
         self.ol = False
         self.span = False
+        self.table = False
+        self.tr = False
+        self.th = False
+        self.td = False
+        self.caption = False
         self.reference = False
 	self.ref_counter = 0
+        self.column_counter = 0
+        self.current_counter = 0
         self.buffer = None
         self.sup = False
         
     def handle_data(self, data):
         if data.strip() == "": return
-	if self.p or self.h1 or self.h2 or self.a or self.span or self.li:
+	if self.p or self.h1 or self.h2 or self.a or self.span or self.li or self.td or self.th or self.caption:
             if self.buffer != None:
                 self.buffer += data
     def handle_starttag(self, tag, attrs):
-        if tag == 'img':
+        if tag == 'img'and not self.table:
             self.start_img(attrs)
         elif tag == 'h1':
             self.start_h1(attrs)
@@ -113,17 +120,27 @@ class Wikiparser(HTMLParser):
             self.start_ul(attrs)
         elif tag == 'ol':
             self.start_ol(attrs)
+        elif tag == 'table':
+            self.start_table(attrs)
+        elif tag == 'tr' and self.table:
+            self.start_tr(attrs)
+        elif tag == 'td' and self.table:
+            self.start_td(attrs)
+        elif tag == 'th'and self.table:
+            self.start_th(attrs)
+        elif tag == 'caption' and self.table:
+            self.start_caption(attrs)
         elif tag == 'span':
 	    self.start_span(attrs)
         elif tag == 'sup' or tag == 'sub' or tag == 'b' or tag == 'i' or tag == 's' or tag == 'small' or tag == 'big' or tag == 'tt' or tag == 'u':
-            if self.reference == False:
+            if self.reference == False and self.table == False:
                if self.buffer != None:
                   self.buffer += "<"+tag+">"
                   self.sup = True
 
 
     def handle_endtag(self, tag):
-        if tag == 'img':
+        if tag == 'img' and not self.table:
             self.end_img()
         elif tag == 'h1':
             self.end_h1()
@@ -139,6 +156,16 @@ class Wikiparser(HTMLParser):
             self.end_ul()
         elif tag == 'ol':
             self.end_ol()
+        elif tag == 'table':
+            self.end_table()
+        elif tag == 'tr' and self.table:
+            self.end_tr()
+        elif tag == 'td' and self.table:
+            self.end_td()
+        elif tag == 'th' and self.table:
+            self.end_th()
+        elif tag == 'caption' and self.table:
+            self.end_caption()
         elif tag == 'span':
             self.end_span()
         elif tag == 'sup' or tag == 'sub' or tag == 'b' or tag == 'i' or tag == 's' or tag == 'small' or tag == 'big' or tag == 'tt' or tag == 'u':
@@ -182,6 +209,18 @@ class Wikiparser(HTMLParser):
             self.pdf.add_text(h2)
         self.buffer = None
         
+    def start_caption(self, attrs):         
+        self.caption = True
+        self.buffer = ""
+        
+    def end_caption(self):
+        self.caption = False
+        if self.buffer and self.buffer.strip() > "":
+            caption = Text(self.buffer, font="FreeSerif", font_size=14) 
+            caption.color = StandardColors.Blue
+            self.pdf.add_text(caption)
+        self.buffer = None
+
     def start_li(self, attrs):         
         self.li = True
         self.buffer = ""
@@ -205,6 +244,57 @@ class Wikiparser(HTMLParser):
         
     def end_a(self):
         self.a = False
+
+    def start_table(self, attrs): 
+        for tups in attrs:
+	    if 'class' in tups:
+		if tups[1] == 'wikitable':
+                    self.table = True
+                    self.wikitable = Table(border_width = 1)
+                    self.wikitable.cell_padding = [2,2,2,2]
+        
+    def end_table(self):
+        if self.table:
+            self.table = False
+            self.pdf.add_table(self.wikitable)
+
+    def start_tr(self, attrs):         
+        self.tr = True
+        self.row = Row(height=25)
+        self.current_counter = 0
+        
+    def end_tr(self):
+        self.tr = False
+        if self.current_counter == self.column_counter:
+            self.wikitable.add_row(self.row)
+
+    def start_td(self, attrs):         
+        self.td = True
+        self.buffer = ""
+        
+    def end_td(self):
+        self.td = False
+        print self.buffer
+        cell_content = Text(self.buffer,font_size=10)
+        cell_content.color = Color(0.0,0.0,0.0,1.0)
+        cell = Cell(cell_content, font_size=8,width=100)
+        self.row.add_cell(cell)
+        self.current_counter+=1
+        self.buffer = None
+
+    def start_th(self, attrs):         
+        self.th = True
+        self.buffer = ""
+        
+    def end_th(self):
+        self.th = False
+        #print self.buffer
+        cell_content = Text(self.buffer,font_size=10)
+        cell_content.color = Color(0.0,0.0,0.0,1.0)
+        cell = Cell(cell_content, font_size=8,width=100)
+        self.row.add_cell(cell)
+        self.column_counter+=1
+        self.buffer = None
     
 #    def start_sup(self, attrs):         
 #        self.sup = True

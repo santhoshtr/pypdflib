@@ -39,10 +39,10 @@ if __name__=="__main__":
     pdf.set_footer(footer)
     table = Table(border_width=1)
     table.cell_padding = [2, 2, 2, 2]
-    row = Row(height=50)
+    row = Row(height=100)
     for i in range(4):
         cell_content = Text("SampleCell "+str(i),font_size=14)
-        cell_content.color = Color(0.0,0.0,0.8,1.0)
+        cell_content.color = Color(0.0,0.0,0.0,1.0)
         cell = Cell(cell_content, font_size=8,width=100)
         row.add_cell(cell)
     for i in range(4):
