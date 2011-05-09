@@ -40,7 +40,24 @@ class Widget(object):
         self.language = None
         self.justify = True
         self.color = StandardColors.Black
-        
+    
+    def set(self, *largs, **dargs):
+        valid = [
+            'style', 
+            'xoffset',
+            'yoffset',
+            'margin_top',
+            'margin_bottom',
+            'margin_left',
+            'margin_right',
+            'hyphenate',
+            'language',
+            'justify',
+            'color'
+        ]
+        for k in dargs:
+            if k in valid:
+                setattr(self, k, dargs[k])
     def set_justify(self, justify):
         self.justify = justify
         
