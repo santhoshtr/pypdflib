@@ -75,7 +75,13 @@ class Widget(object):
         
     def set_style(self, style):
         self.style = style
-
+    
+    def set_offset(self, x=None, y=None):
+        if x is not None:
+            self.xoffset = x
+        if y is not None:
+            self.yoffset = y
+    
     def set_xoffset(self,xoffset):
         self.xoffset = xoffset
         
