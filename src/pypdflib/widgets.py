@@ -41,8 +41,24 @@ class Widget(object):
         self.justify = True
         self.is_markup = False
         self.color = StandardColors.Black
-        self.coordinates = [0,0,0,0]
-        
+    
+    def set(self, *largs, **dargs):
+        valid = [
+            'style', 
+            'xoffset',
+            'yoffset',
+            'margin_top',
+            'margin_bottom',
+            'margin_left',
+            'margin_right',
+            'hyphenate',
+            'language',
+            'justify',
+            'color'
+        ]
+        for k in dargs:
+            if k in valid:
+                setattr(self, k, dargs[k])
     def set_justify(self, justify):
         self.justify = justify
         
@@ -60,7 +76,13 @@ class Widget(object):
         
     def set_style(self, style):
         self.style = style
-
+    
+    def set_offset(self, x=None, y=None):
+        if x is not None:
+            self.xoffset = x
+        if y is not None:
+            self.yoffset = y
+    
     def set_xoffset(self,xoffset):
         self.xoffset = xoffset
         

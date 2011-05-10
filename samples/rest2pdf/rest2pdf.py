@@ -1,6 +1,6 @@
 #!/usr/bin/python
 #-*- coding:utf-8 -*-
-# pypdflib/widgets.py
+# pypdflib/rest2pdf.py
 
 # pypdflib is a pango/cairo framework for generating reports.
 # Copyright © 2010  Santhosh Thottingal <santhosh.thottingal@gmail.com>

@@ -42,7 +42,9 @@ if __name__=="__main__":
     h2= Text("Malayalam",font_size=14) 
     h2.color = StandardColors.Blue
     pdf.add_text(h2)
-    
+    h2 = Text("7787678689768767887<b>Japanese</b><sup>t</sup>",font_size=14)
+    h2.color = StandardColors.Blue
+    pdf.add_text(h2, markup=False)    
     para_file_malayalam=open("malayalam.txt")
     #image = Image(image_file="Four_Sons_of_Dasaratha.png")
     #pdf.add_image(image)

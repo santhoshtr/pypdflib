@@ -22,6 +22,7 @@
 import pango
 from types import StringType
 from copy import deepcopy
+import string
 
 ALIGN_LEFT = 0
 ALIGN_CENTER = 1
@@ -46,33 +47,34 @@ class AttributedList( list ) :
         self._append = super( AttributedList, self ).append
 
     def append( self, *values ) :
-            for value in values :
-                if self.AcceptedType : assert isinstance( value, self.AcceptedType )
-            self._append( value )
+        for value in values :
+            if self.AcceptedType: 
+                assert isinstance( value, self.AcceptedType )
+        self._append( value )
 
-            name = getattr( value, 'name', None )
+        name = getattr( value, 'name', None )
 
-            if name :
-                name = self._make_attributeName( value.name )
-                setattr( self, name, value )
+        if name:
+            name = self._make_attributeName( value.name )
+            setattr( self, name, value )
     
     def _make_attributeName(self, value ) :
         assert value and type( value ) is StringType
-        value = value.replace( ' ', '' )
+        value = value.translate(string.maketrans('',''),string.whitespace)
         return value
 
     def __deepcopy__( self, memo ) :
-            result = self.__class__()
-            result.append( *self[:] )
-            return result
+        result = self.__class__()
+        result.append( *self[:] )
+        return result
 
 class Color(object):
-	def __init__ (self, name, red, green, blue, alpha=1.0):
-            	self.red = red
-		self.green = green
-		self.blue = blue
-		self.alpha = alpha
-                self.name = name
+    def __init__ (self, name='Black', red=0.0, green=0.0, blue=0.0, alpha=1.0):
+        self.red = red
+        self.green = green
+        self.blue = blue
+        self.alpha = alpha
+        self.name = name
 
 class Papers( AttributedList ) :
     def __init__( self ) :

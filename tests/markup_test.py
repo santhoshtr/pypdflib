@@ -44,25 +44,12 @@ if __name__=="__main__":
     pdf.add_text(h2)
     
     para_file_malayalam=open("markup.txt")
-    #image = Image(image_file="Four_Sons_of_Dasaratha.png")
-    #pdf.add_image(image)
     while True:
         para_content = para_file_malayalam.readline()
         if para_content ==None or para_content=="" : break 
-        para = Paragraph(markup=para_content,text = para_content font="Serif")
-        para.language = "ml_IN"
+        para = Paragraph(markup=para_content,text = para_content, font="Serif")
+        para.justify=False
+        #para.language = "ml_IN"
         print para_content
         pdf.add_paragraph(para)
     pdf.flush()
-    """
-    table = Table(border_width=1)
-    row = Row(height=50)
-    for i in range(4):
-        cell = Cell("SampleCell "+str(i),font_size=8,width=100)
-        row.add_cell(cell)
-    for i in range(4):
-        table.add_row(row)
-        
-    pdf.draw_table(table)
-    pdf.flush()
-    """
