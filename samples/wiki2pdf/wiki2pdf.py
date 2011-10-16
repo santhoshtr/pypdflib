@@ -182,8 +182,9 @@ class Wikiparser(HTMLParser):
         for wiki_image in self.images:
             image  = Image()  
             outpath = self.grab_image(wiki_image, "/tmp")
-            image.set_image_file(outpath)
-            self.pdf.add_image(image)
+            if outpath != None:
+                image.set_image_file(outpath)
+                self.pdf.add_image(image)
         self.images = []
         
     def start_h1(self, attrs):         
@@ -331,7 +332,7 @@ class Wikiparser(HTMLParser):
             self.buffer = ""  
         
     def end_span(self):
-        self.buffer += " "
+        self.buffer += ""
         self.span = False
             
     def start_p(self, attrs):
@@ -367,9 +368,15 @@ class Wikiparser(HTMLParser):
         """
         Get the image from wiki
         """
+        excluded_images = """
+            //bits.wikimedia.org/skins-1.18/common/images/magnify-clip.png,
+            //bits.wikimedia.org/w/extensions-1.18/OggHandler/play.png
+        """
+        if imageurl in excluded_images:
+            return None;
         output_filename = None
         try:
-            link= imageurl.strip()
+            link= "https:"+imageurl.strip()
             parts = link.split("/")
             filename = parts[len(parts)-1]
             output_filename = os.path.join(outputfolder , filename)
@@ -419,7 +426,7 @@ def cleanup(page):
     div#jump-to-nav, div.top, div#column-one, div#siteNotice, div#purl, div#head,div#footer, div#head-base, div#page-base, div#stub, div#noprint,
     div#disambig,div.NavFrame,#colophon,.editsection,.toctoggle,.tochidden,.catlinks,.navbox,.sisterproject,.ambox,
     .toccolours,.topicondiv#f-poweredbyico,div#f-copyrightico,div#featured-star,li#f-viewcount,
-    li#f-about,li#f-disclaimer,li#f-privacy,.portal, #footer, #mw-head, #toc
+    li#f-about,li#f-disclaimer,li#f-privacy,.portal, #footer, #mw-head, #toc, #protected-icon, #featured-star, #ogg_player_1
     """
     unwanted_divs = unwanted_sections_list.split(",")
     for section in unwanted_divs:
