@@ -100,13 +100,15 @@ class PDFWriter():
         footer_font_description.set_size((int)(footer.font_size* pango.SCALE))
         footer_layout = pangocairo.CairoContext(self.context).create_layout()
         footer_layout.set_font_description(footer_font_description)
+        footer_layout.set_width((int)((self.width - self.left_margin-self.right_margin) * pango.SCALE))
+        footer_layout.set_alignment(footer.text_align)
         if footer.markup:
             footer_layout.set_markup(str(footer.markup))
         else:
             footer_layout.set_text(str(footer.text))
         ink_rect, logical_rect = footer_layout.get_extents()
         y_position= self.height - self.bottom_margin- logical_rect[3]/pango.SCALE
-        self.context.move_to(self.width/2, y_position)
+        self.context.move_to(self.left_margin, y_position)
         self.context.set_source_rgba (footer.color.red,footer.color.green, footer.color.blue,footer.color.alpha)
         self.pc.show_layout(footer_layout)
         self.draw_line(y_position)
@@ -119,6 +121,7 @@ class PDFWriter():
         header_font_description.set_size((int)(header.font_size * pango.SCALE))
         header_layout = pangocairo.CairoContext(self.context).create_layout()
         header_layout.set_font_description(header_font_description)
+        header_layout.set_width((int)((self.width - self.left_margin-self.right_margin) * pango.SCALE))
         header_layout.set_alignment(header.text_align)
         if header.markup:
             header_layout.set_markup(str(header.markup))
@@ -196,8 +199,10 @@ class PDFWriter():
                     self.page_num= self.page_num+1
                     self.write_header(self.header)
                     if self.footer:
-                        self.footer.set_text(str(self.page_num))
-                    self.write_footer(self.footer)
+                         self.write_footer(self.footer)
+                    else:
+                         self.footer.set_text(str(self.page_num))
+                         self.write_footer(self.footer)
                     self.context.show_page()
                     break
                     
@@ -212,8 +217,10 @@ class PDFWriter():
         self.page_num= self.page_num+1
         self.write_header(self.header)
         if self.footer:
+            self.write_footer(self.footer)
+        else:
             self.footer.set_text(str(self.page_num))
-        self.write_footer(self.footer)
+            self.write_footer(self.footer)
         self.context.show_page()
     
     def add_table(self, table):
@@ -302,6 +309,8 @@ class PDFWriter():
         self.page_num= self.page_num+1
         self.write_header(self.header)
         if self.footer:
+            self.write_footer(self.footer)
+        else:
             self.footer.set_text(str(self.page_num))
             self.write_footer(self.footer)
         self.context.show_page()
