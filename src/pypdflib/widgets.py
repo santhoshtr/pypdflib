@@ -24,7 +24,6 @@ import pango
 import StringIO
 from PIL import Image as pil_image
 from utils import Hyphenator
-from utils import normalizer
 from styles import *
 class Widget(object):
     
@@ -34,7 +33,7 @@ class Widget(object):
         self.yoffset = 0.0
         self.margin_top = 0.0
         self.margin_bottom = 0.0
-        self.margin_left = 0.0   
+        self.margin_left = 0.0
         self.margin_right = 0.0
         self.hyphenate = False
         self.language = None
@@ -69,7 +68,7 @@ class Widget(object):
         
     def __getattribute__(self,name):
         if name == 'text':
-            text = normalizer.normalize(object.__getattribute__(self, 'text'))
+            text = object.__getattribute__(self, 'text')
             if(self.justify and self.language and self.hyphenate):
                 text = Hyphenator().hyphenate(text,self.language)
             return text
@@ -154,15 +153,15 @@ class Text(Widget):
         if font:
             self.font = font
         else:
-            self.font = "Sans"    
+            self.font = "Sans"
         if font_size:
             self.font_size = font_size
         else:
-            self.font_size = 10   
+            self.font_size = 10
         if text_align:
             self.text_align = text_align
         else:
-            self.text_align = pango.ALIGN_LEFT    
+            self.text_align = pango.ALIGN_LEFT
         if markup:
             self.is_markup = True
             self.text = markup
@@ -192,15 +191,15 @@ class Footer(Widget):
         if font:
             self.font = font
         else:
-            self.font = "Sans"    
+            self.font = "Sans"
         if font_size:
             self.font_size = font_size
         else:
-            self.font_size = 10    
+            self.font_size = 10
         if text_align:
             self.text_align = text_align
         else:
-            self.text_align = pango.ALIGN_LEFT    
+            self.text_align = pango.ALIGN_LEFT
         if markup:
             self.is_markup = True
 
